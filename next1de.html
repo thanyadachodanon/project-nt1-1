@@ -1,0 +1,1512 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NexT1DE · Official Fan Info</title>
+  <meta name="description" content="NexT1DE (NT1) – Official fan info: group profile, members, discography, and gallery." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Background & Utility */
+    body { background: linear-gradient(135deg, #286acd 0%, #a3e4db 50%, #fed1ef 100%); min-height: 100vh; }
+    .noise:before { content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .06; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.45"/></svg>'); }
+
+    /* ปุ่มภาษา – selected state ด้วย aria-pressed */
+    .lang-btn[aria-pressed="true"] {
+      background: rgba(255,255,255,.22);
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(0,0,0,.18);
+      transform: translateY(-1px) scale(1.02);
+      border: 1px solid rgba(255,255,255,.6);
+    }
+    .lang-btn { border: 1px solid transparent; }
+
+    @supports (backdrop-filter: blur(2px)) {
+      #langButtons { position: relative; }
+      #langButtons::before {
+        content: "";
+        position: absolute; inset: 0; border-radius: 1rem;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.75);
+        pointer-events: none;
+      }
+    }
+
+    #about dt { color: #3d3d3d; }         /* slate-900 */
+    .bg-white\/85 { background: rgba(255,255,255,.85); } /* เฉดขาวจางอ่านง่ายบนภาพพื้นหลัง */
+
+    #aboutDebut ul {
+      padding-left: 1rem;
+      margin-top: 0.25rem;
+    }
+    #aboutDebut li {
+      line-height: 1.6;
+    }
+    #member-strip {
+      scroll-margin-top: 88px;
+    }
+    @media (min-width: 768px) {
+      #member-strip { scroll-margin-top: 96px; }
+    }
+
+  </style>
+</head>
+
+<body class="text-white antialiased selection:bg-slate-900 selection:text-white noise pt-16">
+  <!-- NAVBAR: fixed + backdrop blur + mobile hamburger -->
+  <nav id="siteNav"
+     class="fixed top-0 left-0 right-0 z-50 transition-all duration-300
+            bg-transparent backdrop-blur-0 border-transparent">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8 py-3">
+      <!-- Brand -->
+      <a href="#top" class="flex items-center">
+        <img id="brandImg" src="./nt1-logo.jpg" alt="NexT1DE" class="h-10 w-10 rounded-full object-cover ring-2 ring-white/70" />
+      </a>
+
+      <!-- Desktop nav -->
+      <div class="hidden md:flex items-center gap-4 text-sm">
+        <a href="#about"   class="hover:opacity-90 px-2" data-i18n="nav_about">ข้อมูลวง</a>
+        <a href="#member-strip" class="hover:opacity-90 px-2" data-i18n="nav_members">สมาชิก</a>
+        <a href="#discog"  class="hover:opacity-90 px-2" data-i18n="nav_discog">ผลงานเพลง</a>
+        <a href="#schedule" class="hover:opacity-90 px-2" data-i18n="nav_schedule">ตารางงาน</a>
+        <a href="#gallery" class="hover:opacity-90 px-2" data-i18n="nav_gallery">แกลเลอรี</a>
+
+        <!-- Language pills -->
+        <div id="langButtons"
+             class="inline-flex items-center gap-2.5 rounded-2xl border border-white/50
+                    bg-white/10 p-1.5 backdrop-blur supports-[backdrop-filter]:bg-black/25">
+          <button class="lang-btn relative px-2 py-1 rounded-xl text-white/90 hover:bg-white/10 hover:text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70" data-lang="th" aria-pressed="true">ไทย</button>
+          <button class="lang-btn relative px-2 py-1 rounded-xl text-white/90 hover:bg-white/10 hover:text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70" data-lang="en" aria-pressed="false">EN</button>
+          <button class="lang-btn relative px-2 py-1 rounded-xl text-white/90 hover:bg-white/10 hover:text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70" data-lang="zh" aria-pressed="false">中文</button>
+        </div>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button id="hamburgerBtn"
+              class="md:hidden inline-flex items-center justify-center rounded-lg p-2 ring-1 ring-white/70 bg-black/60"
+              aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg id="iconOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+        <svg id="iconClose" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu panel -->
+    <div id="mobileMenu" class="md:hidden hidden border-t border-white/20 bg-black/50 backdrop-blur">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-3 text-sm">
+        <div class="flex flex-col gap-2">
+          <a href="#about"   class="px-2 py-2 rounded-lg hover:bg-white/10" data-i18n="nav_about">ข้อมูลวง</a>
+          <a href="#member-strip" class="px-2 py-2 rounded-lg hover:bg-white/10" data-i18n="nav_members">สมาชิก</a>
+          <a href="#discog"  class="px-2 py-2 rounded-lg hover:bg-white/10" data-i18n="nav_discog">ผลงานเพลง</a>
+          <a href="#schedule" class="px-2 py-2 rounded-lg hover:bg-white/10" data-i18n="nav_schedule">ตารางงาน</a>
+          <a href="#gallery" class="px-2 py-2 rounded-lg hover:bg-white/10" data-i18n="nav_gallery">แกลเลอรี</a>
+        </div>
+        <div class="mt-3">
+          <div id="langButtonsMobile"
+               class="inline-flex items-center gap-2.5 rounded-2xl border border-white/50 bg-white/10 p-1.5 backdrop-blur">
+            <button class="lang-btn relative px-2 py-1 rounded-xl text-white/90" data-lang="th" aria-pressed="true">ไทย</button>
+            <button class="lang-btn relative px-2 py-1 rounded-xl text-white/90" data-lang="en" aria-pressed="false">EN</button>
+            <button class="lang-btn relative px-2 py-1 rounded-xl text-white/90" data-lang="zh" aria-pressed="false">中文</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO COVER -->
+  <header id="top" class="relative -mt-16">
+  <div class="relative h-[42vh] md:h-[56vh] lg:h-[64vh]">
+    <img id="heroCover" src="./next1de-cover.jpg"
+         class="absolute inset-0 h-full w-full object-cover object-top shadow-xl" />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent"></div>
+     <div class="absolute inset-x-0 bottom-8 mx-auto max-w-6xl px-5 sm:px-8 lg:px-12">
+        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-sm">NexT1DE</h1>
+        <p class="mt-2 inline-block rounded-full bg-white/15 px-4 py-1 text-sm text-white backdrop-blur" data-i18n="hero_tag">Official Fan Info</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT (ปรับเลย์เอาต์ใหม่: mobile อ่านง่าย / desktop เป็น grid) -->
+  <section id="about" class="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12 py-10 anchor">
+    <div class="rounded-2xl border border-white/40 bg-white/10 backdrop-blur-md shadow-xl">
+      <div class="p-6 md:p-8">
+        <!-- ABOUT list (ใหม่) -->
+      <dl class="grid gap-5 md:gap-6 grid-cols-1 md:grid-cols-2">
+      <!-- Item: ชื่อวง -->
+      <div class="rounded-2xl border border-white/60 bg-white/10 text-slate-900 shadow-sm p-4 md:p-5">
+        
+          <dt class="text-[11px] font-semibold uppercase tracking-wider text-slate-700" data-i18n="group_name_label">ชื่อวง</dt>
+          <dd id="aboutGroupName" class="col-start-2 mt-1 text-base leading-6 text-white"></dd>
+      
+      </div>
+
+      <!-- Item: ความหมายของชื่อวง -->
+      <div class="rounded-2xl border border-white/60 bg-white/10 text-slate-900 shadow-sm p-4 md:p-5">
+       
+         
+          <dt class="text-[11px] font-semibold uppercase tracking-wider text-slate-700" data-i18n="meaning_label">ความหมายของชื่อวง</dt>
+          <dd id="aboutMeaning" class="col-start-2 mt-1 prose prose-sm max-w-none leading-6 text-white"></dd>
+      
+      </div>
+
+      <!-- Item: เดบิวต์ -->
+      <div class="rounded-2xl border border-white/60 bg-white/10 text-slate-900 shadow-sm p-4 md:p-5">
+       
+          <dt class="text-[11px] font-semibold uppercase tracking-wider text-slate-700" data-i18n="debut_label">ก่อตั้ง / เดบิวต์</dt>
+          <dd id="aboutDebut" class="col-start-2 mt-1 text-base leading-6 text-white"></dd>
+ 
+      </div>
+
+      <!-- Item: สังกัด -->
+      <div class="rounded-2xl border border-white/60 bg-white/10 text-slate-900 shadow-sm p-4 md:p-5">
+        
+          <dt class="text-[11px] font-semibold uppercase tracking-wider text-slate-700" data-i18n="agency_label">สังกัด</dt>
+          <dd id="aboutAgency" class="col-start-2 mt-1 text-base leading-6 text-white"></dd>
+      
+      </div>
+
+      <!-- Item: แฟนคลับ -->
+      <div class="rounded-2xl border border-white/60 bg-white/10 text-slate-900 shadow-sm p-4 md:p-5">
+        
+          <dt class="text-[11px] font-semibold uppercase tracking-wider text-slate-700" data-i18n="fandom_label">แฟนคลับ</dt>
+          <dd id="aboutFandom" class="col-start-2 mt-1 text-base leading-6 text-white"></dd>
+        
+      </div>
+
+      <!-- Item: สีประจำวง -->
+      <div class="rounded-2xl border border-white/60 bg-white/10 text-slate-900 shadow-sm p-4 md:p-5">
+        
+          <dt class="text-[11px] font-semibold uppercase tracking-wider text-slate-700" data-i18n="colors_label">สีประจำวง</dt>
+          <dd class="col-start-2 mt-1">
+              <span class="inline-flex items-center gap-1">
+                <span class="inline-block h-5 w-5 rounded-full ring-1 ring-slate-300" style="background:#286acd"></span>
+                <code class="text-white">#286acd</code>
+              </span>
+              <span class="inline-flex items-center gap-1">
+                <span class="inline-block h-5 w-5 rounded-full ring-1 ring-slate-300" style="background:#a3e4db"></span>
+                <code class="text-white">#a3e4db</code>
+              </span>
+              <span class="inline-flex items-center gap-1">
+                <span class="inline-block h-5 w-5 rounded-full ring-1 ring-slate-300" style="background:#fed1ef"></span>
+                <code class="text-white">#fed1ef</code>
+              </span>
+
+          </dd>
+        
+      </div>
+
+      <!-- Item: ช่องทางหลัก -->
+      <div class="rounded-2xl border border-white/60 bg-white/10 text-slate-900 shadow-sm p-4 md:p-5 md:col-span-2">
+        
+          <dt class="text-[11px] font-semibold uppercase tracking-wider text-slate-700" data-i18n="socials_label">ช่องทางหลัก</dt>
+          <dd class="col-start-2 mt-1">
+            <div id="groupSocials" class="flex flex-wrap items-center gap-2"></div>
+          </dd>
+        
+      </div>
+    </dl>
+
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBER AVATAR STRIP -->
+  <section id="member-strip" class="anchor bg-white/15">
+    <div class="mx-auto max-w-6xl px-6 sm:px-10 lg:px-16 pt-3 pb-4">
+      <div id="avatarStrip" class="flex items-start justify-between gap-2 sm:gap-4"></div>
+    </div>
+  </section>
+
+  <!-- MEMBERS -->
+    <section id="members" class="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12 py-10 anchor">
+      <div id="membersGrid" class="grid grid-cols-1 gap-6"></div>
+    </section>
+
+  <!-- DISCOGRAPHY -->
+  <section id="discog" class="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12 py-10 anchor">
+    <div class="rounded-2xl border border-white/40 bg-white/10 backdrop-blur-md text-white p-6 md:p-8 shadow-xl">
+      <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-extrabold tracking-tight text-slate-900" data-i18n="discography_title">ผลงานเพลงทั้งหมด</h2>
+      </div>
+      <div class="my-5 h-px w-full bg-white/30"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <aside class="lg:col-span-1">
+          <ul id="discogList" class="grid gap-2"></ul>
+        </aside>
+        <div class="lg:col-span-2">
+          <div id="discogPreview" class="rounded-2xl border border-slate-200 bg-white p-3 shadow">
+            <div class="aspect-video w-full overflow-hidden rounded-xl">
+              <iframe id="discogIframe" class="h-full w-full" src="" title="Preview"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="p-3">
+              <h3 id="discogTitle" class="text-xl font-bold text-slate-900"></h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE / CALENDAR -->
+    <section id="schedule" class="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12 py-10 anchor">
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <h2 class="text-2xl font-extrabold tracking-tight text-slate-900" data-i18n="schedule_title">ตารางงาน</h2>
+
+        <!-- Filter pills -->
+        <div id="scheduleFilters" class="flex flex-wrap items-center gap-2"></div>
+      </div>
+
+      <!-- Month nav -->
+      <div class="mt-3 flex items-center gap-2">
+        <button id="calPrev" class="rounded-full bg-white/10 text-white ring-1 ring-white/40 hover:bg-white/20 px-3 py-1.5">‹</button>
+        <div id="calLabel" class="text-sm font-semibold text-white/95"></div>
+        <button id="calNext" class="rounded-full bg-white/10 text-white ring-1 ring-white/40 hover:bg-white/20 px-3 py-1.5">›</button>
+        <button id="calToday" class="ml-auto rounded-full bg-white text-slate-900 ring-1 ring-slate-300 hover:bg-slate-50 px-3 py-1.5" data-i18n="cal_today">เดือนนี้</button>
+      </div>
+
+      <div class="my-4 h-px w-full bg-white/30"></div>
+
+      <!-- Weekday header -->
+      <div id="weekdayHeader" class="grid grid-cols-7 text-[11px] uppercase tracking-wide text-white/80 mb-1"></div>
+
+      <!-- Calendar grid -->
+      <div id="calendarGrid" class="grid grid-cols-7 gap-1 sm:gap-2"></div>
+
+    </section>
+
+    <!-- Modal แสดงรายละเอียดงาน -->
+    <div id="eventModal" class="fixed inset-0 z-[999] hidden bg-black/70 backdrop-blur-sm">
+      <div class="mx-auto my-6 max-w-3xl w-[92%]">
+        <article class="overflow-hidden rounded-2xl border border-white/30 bg-white text-slate-900 shadow-xl">
+          <div class="flex items-center justify-between px-5 py-3 border-b border-slate-200">
+            <h3 id="evTitle" class="text-xl font-bold"></h3>
+            <button id="evClose" class="rounded-md px-3 py-1 text-slate-600 hover:bg-slate-100" aria-label="Close">×</button>
+          </div>
+          <div class="p-5 space-y-4">
+            <div class="text-sm text-slate-700"><span class="font-semibold" data-i18n="event_date_label">วันที่</span>: <span id="evDate"></span></div>
+            <div class="text-sm text-slate-700"><span class="font-semibold" data-i18n="event_members_label">สมาชิก</span>: <span id="evMembers"></span></div>
+
+            <!-- Gallery thumbnails -->
+            <div id="evImages" class="grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
+
+            <!-- YouTube -->
+            <div id="evVideoWrap" class="rounded-xl overflow-hidden border border-slate-200">
+              <div class="aspect-video">
+                <iframe id="evVideo" class="h-full w-full"
+                  src="" title="Event Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+
+  <!-- GALLERY -->
+  <section id="gallery" class="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12 py-10 anchor">
+    <div class="rounded-2xl border border-white/40 bg-white/10 backdrop-blur-md text-white p-6 md:p-8 shadow-xl">
+      <h2 class="text-2xl font-extrabold tracking-tight pb-2 text-slate-900" data-i18n="gallery_title">แกลเลอรี</h2>
+      <div class="my-5 h-px w-full bg-white/30"></div>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-3 shadow">
+        <div id="galleryArea" class="relative group select-none">
+          <div class="w-full max-w-4xl mx-auto">
+            <div id="galleryAspect" class="w-full overflow-hidden rounded-xl mx-auto aspect-[3/4]">
+              <img id="galleryMain" class="h-full w-full object-cover object-center"
+                   src="https://placehold.co/900x1200/png?text=NexT1DE+Gallery" alt="Gallery main" />
+            </div>
+          </div>
+
+          <button id="prevBtn" class="opacity-0 group-hover:opacity-100 transition absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white">‹</button>
+          <button id="nextBtn" class="opacity-0 group-hover:opacity-100 transition absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white">›</button>
+        </div>
+
+        <div id="thumbs" class="mt-4 grid grid-cols-5 sm:grid-cols-7 gap-2 max-w-4xl mx-auto"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox (gallery) -->
+  <div id="galleryLightbox" class="fixed inset-0 z-[999] hidden bg-black/80 backdrop-blur-sm">
+    <button id="glbClose"
+            class="absolute top-3 right-3 text-white/80 hover:text-white text-2xl leading-none px-3 py-1"
+            aria-label="Close">×</button>
+    <div class="w-full h-full flex items-center justify-center p-3">
+      <img id="glbImg" class="max-h-[90vh] max-w-[90vw] object-contain rounded-xl shadow-2xl" alt="Preview"/>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/40">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10 text-sm text-white/90">
+      <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <div class="flex items-center gap-2">
+          <span class="ml-2 text-black">by NexT1DE Project Thailand</span>
+        </div>
+        <div class="flex flex-wrap items-center gap-2" id="footerSocials"></div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+
+    // ===== Data =====
+
+    const instagram_icon_url = "https://cdn.pixabay.com/photo/2021/06/15/12/14/instagram-6338393_1280.png"
+    const tiktok_icon_url    = "https://crystalpng.com/wp-content/uploads/2023/05/tiktok-logo-png.png"
+    const weibo_icon_url     = "https://images.icon-icons.com/1753/PNG/512/iconfinder-social-media-applications-16weibo-4102588_113813.png"
+    const x_icon_url         = "https://img.freepik.com/free-vector/twitter-app-new-logo-x-black-background_1017-45425.jpg?semt=ais_hybrid&w=740&q=80"
+    const youtube_icon_url   = "https://img.freepik.com/premium-vector/youtube-color-icons_1209566-1.jpg?semt=ais_hybrid&w=740&q=80"
+    const douyin_icon_url   = "https://www.taobao2you.com/wp-content/uploads/2025/07/Douyin-logo-app.png"
+    const xhs_icon_url   = "https://play-lh.googleusercontent.com/o4qWb7cqEHfygA2fHl_VhBHqWx9InSd7rlaAMe7ktDuQTxh2Bm7B6auL3zZ5ibLmTWs=w240-h480-rw"
+
+    const groupSocials = [
+      { handle:'@next1de_official', url:'https://www.instagram.com/next1de_official/', iconUrl:instagram_icon_url },
+      { handle:'@NexT1DEofficial', url:'https://x.com/NexT1DEofficial', iconUrl:x_icon_url },
+      { handle:'@next1de_official', url:'https://www.tiktok.com/@next1de_official', iconUrl:tiktok_icon_url},
+      { handle:'NexT1DE official', url:'https://www.youtube.com/@NexT1DEofficial', iconUrl:youtube_icon_url },
+      { handle:'NexT1DE官博', url:'https://weibo.com/u/7989034930', iconUrl:weibo_icon_url },
+      { handle:'NexT1DE组合', url:'https://v.douyin.com/09n93LLtOAk/', iconUrl:douyin_icon_url },
+      { handle:'@NexT1DE组合', url:'https://xhslink.com/m/2W3zbGsUPtG', iconUrl:xhs_icon_url },
+    ];
+
+    const mySocials = [
+      { handle:'@NT1_Project_TH', url:'https://x.com/NT1_Project_TH', iconUrl:x_icon_url }
+    ];
+
+    const members = [
+    {
+      id: "dorn",
+      image: "./dorn.jpg",
+      birthday: "2001-03-05",
+      socials: [
+        {handle:'@dornkhumraj', url:'https://www.instagram.com/dornkhumraj/', iconUrl:instagram_icon_url},
+        {handle:'@dornkhumraj', url:'https://www.tiktok.com/@dornkhumraj', iconUrl:tiktok_icon_url},
+        {handle:'NexT1DE-DORN', url:'https://weibo.com/u/7966010285', iconUrl:weibo_icon_url},
+        {handle:'NexT1DE-DORN', url:'https://v.douyin.com/dJxAJ44SxBs/', iconUrl:douyin_icon_url},
+        {handle:'@NexT1DE-DORN', url:'https://xhslink.com/m/9hanfxVxd2E', iconUrl:xhs_icon_url},
+      ],
+      locale: {
+        th: { shortname:"DORN", stage:"ดรณ์", fullname:"กร คุ้มราช", position:"เซ็นเตอร์", nationality:"ไทย", 
+        height : "171 ซม.", bloodType : "B" , mbti: "ENFJ", hobby:"เล่นเกมส์, นอน", favoriteColor:"เทาดำ", favoriteAnimal:"สุนัข, เหยี่ยว", favoriteFood: "ไข่ไก่", fandom:"🐉 / อัลลี่" },
+        en: { shortname:"DORN", stage:"Dorn", fullname:"Korn Khumraj", position:"Center", nationality:"Thai", 
+        height : "171 cm", bloodType : "B", mbti : "ENFJ", hobby : "Playing games, sleeping", favoriteColor : "Gray-black", favoriteAnimal : "Dog, hawk", favoriteFood : "Eggs", fandom:"🐉 /Anllys" },
+        zh: { shortname:"DORN", stage:"Dorn", fullname:"Korn Khumraj", position:"中心位", nationality:"泰国", 
+        height : "171厘米", bloodType : "B型", mbti : "ENFJ型", hobby : "玩游戏、睡觉", favoriteColor : "灰黑色", favoriteAnimal : "狗、鹰", favoriteFood : "鸡蛋", fandom:"🐉 /Anllys" },
+      }
+    },
+    {
+      id: "thio",
+      image: "./thio.jpg",
+      birthday: "2005-09-20", // ตามข้อมูลล่าสุด: 20 กันยายน 2005
+      socials: [
+        {handle:'@thiothamm', url:'https://www.instagram.com/thiothamm/', iconUrl:instagram_icon_url},
+        {handle:'@thiothaio20', url:'https://www.tiktok.com/@thiothaio20', iconUrl:tiktok_icon_url},
+        {handle:'NexT1DE-THIO', url:'https://weibo.com/u/7968478760', iconUrl:weibo_icon_url},
+        {handle:'@thiothamm', url:'https://x.com/thiothamm', iconUrl:x_icon_url},
+        {handle:'NexT1DE–THI–O', url:'https://v.douyin.com/dc6yN9JivpU/', iconUrl:douyin_icon_url},
+        {handle:'@NexT1DE-Thi-o', url:'https://xhslink.com/m/7E6CFp0qrVy', iconUrl:xhs_icon_url},
+      ],
+      locale: {
+        th: { shortname:"Thi-O", stage:"ไทโอ", fullname:"ทัมม ควรทรงธรรม", position:"Vocal", nationality:"ไทย", 
+        height : "176 ซม.", bloodType : "AB" , mbti: "ENFP", hobby:"เขียน, โปรดิวซ์เพลง, กิน", favoriteColor:"สีดำ", favoriteAnimal:"สุนัขพันธุ์ปอมเมเรเนียน", favoriteFood: "ไก่ทอด", fandom:"🌻 / ไทออนส์" },
+        en: { shortname:"Thi-O", stage:"Thi-O", fullname:"Thamm Kuansongtham", position:"Vocal", nationality:"Thai", Height : "176 cm", 
+        height : "176 cm", bloodType : "AB", mbti : "ENFP", hobby : "Writing, music producing, eating", favoriteColor : "Black", favoriteAnimal : "Pomeranian dog", favoriteFood : "Fried chicken", fandom:"🌻 / Thions" },
+        zh: { shortname:"Thi-O", stage:"Thi-O", fullname:"Thamm Kuansongtham", position:"主唱", nationality:"泰国", Height : "176 cm", 
+        height : "176厘米", bloodType : "AB型", mbti : "ENFP型", hobby : "写作、音乐制作、吃美食", favoriteColor : "黑色", favoriteAnimal : "博美犬", favoriteFood : "炸鸡", fandom:"🌻 / Thions" },
+      },
+    },
+    {
+      id: "huyetao",
+      image: "./yetao.jpg",
+      birthday: "2000-09-22",
+      socials: [
+        {handle:'@h_yetao', url:'https://www.instagram.com/h_yetao/', iconUrl:instagram_icon_url},
+        {handle:'@h_yetao', url:'https://www.tiktok.com/@h_yetao', iconUrl:tiktok_icon_url},
+        {handle:'NexT1DE-胡烨韬', url:'https://weibo.com/u/6041673899', iconUrl:weibo_icon_url},
+        {handle:'NexT1DE-胡烨韬', url:'https://v.douyin.com/hr3uOZC2Nts/', iconUrl:douyin_icon_url},
+        {handle:'@NexT1DE-胡烨韬', url:'https://xhslink.com/m/1HsdmNnAlFK', iconUrl:xhs_icon_url},
+      ],
+      locale: {
+        th: { shortname:"YETAO", stage:"หูเย่เทา", fullname:"HU YE TAO", position:"หัวหน้าวง", nationality:"จีน", 
+        height : "178 ซม.", bloodType : "-" , mbti: "ENFP", hobby:"เต้น, ความงาม, เซ็กซี่", favoriteColor:"สีสัน", favoriteAnimal:"สุนัขจิ้งจอก", favoriteFood: "ชานม", fandom:"🍑 / แครอท" },
+        en: { shortname:"YETAO", stage:"HU YE TAO", fullname:"HU YE TAO", position:"Leader", nationality:"Chinese", 
+        height : "178 cm", bloodType : "-", mbti : "ENFP", hobby : "Dancing, beauty, sexy style", favoriteColor : "Colorful", favoriteAnimal : "Fox", favoriteFood : "Milk tea", fandom : "🍑 / Carrot" },
+        zh: { shortname:"胡烨韬", stage:"胡烨韬", fullname:"", position:"队长", nationality:"中国", 
+        height : "178厘米", bloodType : "-", mbti : "ENFP型", hobby : "跳舞、美妆、性感风格", favoriteColor : "多彩色", favoriteAnimal : "狐狸", favoriteFood : "奶茶", fandom : "🍑 / 胡萝卜" },
+      }
+    },
+    {
+      id: "shen",
+      image: "./shen.jpg",
+      birthday: "2006-02-07", // ตามข้อมูลล่าสุด: 7 กุมภาพันธ์ 2006
+      socials: [
+        {handle:'@shen.yisheng', url:'https://www.instagram.com/shen.yisheng/', iconUrl:instagram_icon_url},
+        {handle:'@shenyisheng0227', url:'https://www.tiktok.com/@shenyisheng0227', iconUrl:tiktok_icon_url},
+        {handle:'NexT1DE-SHEN申义晟', url:'https://weibo.com/u/6507103706', iconUrl:weibo_icon_url},
+        {handle:'NexT1DE-SHEN申义晟', url:'https://v.douyin.com/l_1-5TkOKaY/', iconUrl:douyin_icon_url},
+        {handle:'@NexT1DE-SHEN申义晟', url:'https://xhslink.com/m/2NbJWAah61F', iconUrl:xhs_icon_url},
+      ],
+      locale: {
+        th: { shortname:"SHEN", stage:"เซิน", fullname:"SHEN YI SHENG", position:"Dance", nationality:"จีน", 
+        height : "183 ซม.", bloodType : "A" , mbti: "ENFT", hobby:"บาสเกตบอล, ลองทำสิ่งที่น่าสนใจ", favoriteColor:"ส้ม", favoriteAnimal:"สุนัข", favoriteFood: "ข้าวผัดเนื้อรสเผ็ด", fandom:"🐶 / โถวซือ" },
+        en: { shortname:"SHEN", stage:"SHEN YI SHENG", fullname:"", position:"Dance", nationality:"Chinese", 
+        height : "183 cm", bloodType : "A", mbti : "ENFT", hobby : "Basketball, trying interesting things", favoriteColor : "Orange", favoriteAnimal : "Dog", favoriteFood : "Spicy beef fried rice", fandom:"🐶 / tóu shī" },
+        zh: { shortname:"申义晟", stage:"申义晟", fullname:"", position:"舞蹈", nationality:"中国", 
+        height : "183厘米", bloodType : "A型", mbti : "ENFT型", hobby : "打篮球、尝试有趣的事物", favoriteColor : "橙色", favoriteAnimal : "狗", favoriteFood : "辣味牛肉炒饭", fandom:"🐶 / 头师" },
+      }
+    },
+    {
+      id: "omar",
+      image: "./omar.jpg",
+      birthday: "2009-09-25",
+      socials: [
+        {handle:'@dinomar555', url:'https://www.instagram.com/dinomar555/', iconUrl:instagram_icon_url},
+        {handle:'NexT1DE-OMAR唐奥玛', url:'https://weibo.com/u/7567410828', iconUrl:tiktok_icon_url},
+        {handle:'NexT1DE-OMAR唐奥玛', url:'https://weibo.com/u/7567410828', iconUrl:weibo_icon_url},
+        {handle:'NexT1DE-OMAR唐奥玛', url:'https://v.douyin.com/cd5aW_vmnjA/', iconUrl:douyin_icon_url},
+        {handle:'@NexT1DE-OMAR唐奥玛', url:'https://xhslink.com/m/1HsdmNnAlFK', iconUrl:xhs_icon_url},
+      ],
+      locale: {
+        th: {  shortname:"OMAR", stage:"โอมาร์", fullname:"OMAR TANG", position:"Dance", nationality:"จีน", 
+        height : "187 ซม.", bloodType : "B" , mbti: "ENFP", hobby:"บาสเกตบอล, บิลเลียด, ตีกลอง, เต้น", favoriteColor:"สีขาว, สีฟ้า", favoriteAnimal:"ลูกสุนัข", favoriteFood: "แฮมเบอร์เกอร์", fandom:"🦖 / มาริโอ้" },
+        en: {  shortname:"OMAR", stage:"OMAR TANG", fullname:"", position:"Dance", nationality:"Chinese", 
+          height : "187 cm", bloodType : "B", mbti : "ENFP", hobby : "Basketball, billiards, drumming, dancing", favoriteColor : "White, blue", favoriteAnimal : "Puppy", favoriteFood : "Hamburger", fandom : "🦖 / Mario" },
+        zh: {  shortname:"唐奥玛", stage:"唐奥玛", fullname:"", position:"舞蹈", nationality:"中国", 
+          height : "187厘米", bloodType : "B型", mbti : "ENFP型", hobby : "打篮球、台球、打鼓、跳舞", favoriteColor : "白色、蓝色", favoriteAnimal : "小狗", favoriteFood : "汉堡", fandom : "🦖 / 马里奥" },
+      }
+    },
+    {
+      id: "xiong",
+      image: "./xiong.jpg",
+      birthday: "2002-06-29",
+      socials: [
+        {handle:'@xiong_629', url:'https://www.instagram.com/xiong_629/', iconUrl:instagram_icon_url},
+        {handle:'@xongjnlin', url:'https://www.tiktok.com/@xongjnlin', iconUrl:tiktok_icon_url},
+        {handle:'NexT1DE-林锦雄', url:'https://weibo.com/u/6396670398', iconUrl:weibo_icon_url},
+        {handle:'NexT1DE-林锦雄', url:'https://v.douyin.com/vReTazCtw9w/', iconUrl:douyin_icon_url},
+        {handle:'@NexT1DE-林锦雄', url:'https://xhslink.com/m/4J2zzDh0X9f', iconUrl:xhs_icon_url},
+      ],
+      locale: {
+        th: { shortname:"XIONG", stage:"ฉง", fullname:"LIN JIN XIONG", position:"Dance", nationality:"จีน", 
+        height : "183 ซม.", bloodType : "A" , mbti: "INFP", hobby:"ดูภาพยนตร์, ดื่มชาไข่มุก", favoriteColor:"สีฟ้า, สีชมพู", favoriteAnimal:"สุนัขพันธุ์โกลเด้นรีทรีฟเวอร์", favoriteFood: "ชาไข่มุก", fandom:"🐻 / ไอแบร์" },
+        en: { shortname:"XIONG", stage:"LIN JIN XIONG", fullname:"", position:"Dance", nationality:"Chinese", 
+        height : "183 cm", bloodType : "A", mbti : "INFP", hobby : "Watching movies, drinking bubble tea", favoriteColor : "Blue, pink", favoriteAnimal : "Golden Retriever", favoriteFood : "Bubble tea", fandom:"🐻 / iBear" },
+        zh: { shortname:"林锦雄", stage:"林锦雄", fullname:"", position:"舞蹈", nationality:"中国", 
+        height : "183厘米", bloodType : "A型", mbti : "INFP型", hobby : "看电影、喝珍珠奶茶", favoriteColor : "蓝色、粉色", favoriteAnimal : "金毛寻回犬", favoriteFood : "珍珠奶茶", fandom:"🐻 / iBear" },
+      }
+    },
+    {
+      id: "yao",
+      image: "./zihao.jpg",
+      birthday: "2005-07-28",
+      socials: [
+        {handle:'@yaozihao0728', url:'https://www.instagram.com/yaozihao0728/', iconUrl:instagram_icon_url},
+        {handle:'@yaozihao28', url:'https://www.tiktok.com/@yaozihao28', iconUrl:tiktok_icon_url},
+        {handle:'NexT1DE姚梓豪', url:'https://weibo.com/u/2170610937', iconUrl:weibo_icon_url},
+        {handle:'NexT1DE-姚梓豪', url:'https://v.douyin.com/uZmdfpxBu6k/', iconUrl:douyin_icon_url},
+        {handle:'@NexT1DE-姚梓豪', url:'https://xhslink.com/m/6XKuQiNNC1v', iconUrl:xhs_icon_url},
+      ],
+      locale: {
+        th: { shortname:"ZIHAO", stage:"จื่อหาว", fullname:"YAO ZI HAO", position:"Dance, Rap", nationality:"จีน", 
+        height : "173 ซม.", bloodType : "O" , mbti: "ENFP", hobby:"กระตือรือร้น, ชอบเข้าสังคม", favoriteColor:"สีฟ้า", favoriteAnimal:"กลัวสัตว์ทุกชนิด", favoriteFood: "ทุกอย่าง ยกเว้น หัวหอม, ขิง, กระเทียม", fandom:"🦄 / หม่าม้าจื่อหาว" },
+        en: { shortname:"ZIHAO", stage:"YAO ZI HAO", fullname:"", position:"Dance, Rap", nationality:"Chinese", 
+        height : "173 cm", bloodType : "O", mbti : "ENFP", hobby : "Being energetic, socializing", favoriteColor : "Blue", favoriteAnimal : "Afraid of all animals", favoriteFood : "Everything except onions, ginger, and garlic", fandom:"🦄 / mama Zi HAO" },
+        zh: { shortname:"姚梓豪", stage:"姚梓豪", fullname:"", position:"舞蹈，Rap", nationality:"中国", 
+        height : "173厘米", bloodType : "O型", mbti : "ENFP型", hobby : "充满活力、喜欢社交", favoriteColor : "蓝色", favoriteAnimal : "害怕所有动物", favoriteFood : "除了洋葱、姜和大蒜以外什么都吃", fandom:"🦄 / 姚梓豪的妈妈" },
+      }
+    },
+  ];
+
+// ===== Schedule Data =====
+// หมายเหตุ: "06.04" = 6 เม.ย. 2025 (ผูกปีไว้ที่ 2025) — เปลี่ยนปีได้ที่ YEAR_BASE
+const YEAR_BASE = 2025;
+
+// ตัวเลือกประเภท (เพื่อจับคู่กับฟิลเตอร์)
+const EVENT_TYPES = {
+  all: 'all',
+  show: 'show',           // "รายการ" / สื่อ
+  stage: 'stage',         // เวที/คอนเสิร์ต/อีเวนต์
+  celebrate: 'celebrate', // โอกาสพิเศษ
+  fanmeet: 'fanmeet',     // แฟนมีต
+  release: 'release',     // ปล่อยเพลง/คัฟเวอร์/เอ็มวี
+};
+
+// แมปชื่อสมาชิกสำหรับโชว์ใน Modal โดยยึดจาก members[]
+function memberDisplayNameById(id) {
+  const m = members.find(x => x.id === id);
+  if (!m) return id;
+  const loc = m.locale[currentLang] || m.locale.en;
+  // โชว์เป็น SHORTNAME · Stage (เช่น DORN · ดรณ์)
+  return `${(loc.shortname || '').trim()}${loc.stage ? ' · ' + loc.stage : ''}`.trim() || (m.locale.en.shortname || id);
+}
+
+// แปลง "DD.MM" → Date
+function parseDDMM(ddmm, year = YEAR_BASE) {
+  const [d, m] = ddmm.split('.').map(s => parseInt(s.trim(), 10));
+  if (!d || !m) return null;
+  return new Date(year, m - 1, d);
+}
+
+// โครงอีเวนต์
+  // { date:'DD.MM', title:'', type:EVENT_TYPES.*, members:[id...], images:[...], youtube:'...' }
+  const scheduleEvents = [
+    // APR
+    { date:'06.04', title:'Debut NexT1DE',                         type:EVENT_TYPES.celebrate, members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'10.04', title:'EFM Fandom Live',                       type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'12.04', title:'Waterbomb',                             type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'14.04', title:'Songkarn Festival Siam Paragon',        type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'23.04', title:'Friends of NGG',                        type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'25.04', title:"Friends of Lotus’s' Brand Campaign",    type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'02.05', title:'Foshan Galaxy Riverside Music Festival',type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'06.05', title:'Release NexT1DE',                       type:EVENT_TYPES.release,    members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'https://www.youtube.com/watch?v=Z_go-nKzsD4' },
+    { date:'06.05', title:'1 month Days Debut',                    type:EVENT_TYPES.celebrate,  members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'13.05', title:'China Brand Day',                       type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'18.05', title:'3 Zap',                                 type:EVENT_TYPES.show,       members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'18.05', title:'Thailand Music Countdown',              type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'21.05', title:'Mint Magazine',                         type:EVENT_TYPES.show,       members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'30.05', title:'Friends of Benice',                     type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+
+    // JUN
+    { date:'06.06', title:'Release Cover · Just Say Hello',        type:EVENT_TYPES.release,    members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'https://www.youtube.com/watch?v=IpI1NRgVpDg' },
+    { date:'18.06', title:'TME Recommended Concert',               type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'21.06', title:'Tia Ray’s “Moonlight Run Wild 2.0” (guest)', type:EVENT_TYPES.stage, members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'22.06', title:'Happy Graduation Day',                  type:EVENT_TYPES.celebrate,  members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'29.06', title:'NexT1DE & X-Fire Camp Trainee',         type:EVENT_TYPES.show,       members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'30.06', title:'Release Cover · Evening Breeze',        type:EVENT_TYPES.release,    members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'https://www.youtube.com/watch?v=Uji2ue3zHDgj' },
+
+    // JUL
+    { date:'12.07', title:'Fan meet · Indonesia',                  type:EVENT_TYPES.fanmeet,    members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'15.07', title:'100 Days Debut',                        type:EVENT_TYPES.celebrate,  members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'15.07', title:'Release · 奔跑在地球的小孩',             type:EVENT_TYPES.release,    members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'https://www.youtube.com/watch?v=AQcup_hya_U' },
+    { date:'31.07', title:'Release · Chemistry',                   type:EVENT_TYPES.release,    members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'https://www.youtube.com/watch?v=lqLOrgEEfI0' },
+
+    // AUG
+    { date:'02.08', title:'Starry Summer Season 7',                type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'15.08', title:'Release · Take it Easy',                type:EVENT_TYPES.release,    members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'https://www.youtube.com/watch?v=ReQOIZKuq38' },
+    { date:'15.08', title:'(hit2025) Stage Debut',                 type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'17.08', title:'Jump Park Carnival',                    type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'18.08', title:'First MV · Take it Easy',               type:EVENT_TYPES.release,    members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:['https://placehold.co/1200x800?text=Take+it+Easy+MV'], youtube:'https://www.youtube.com/watch?v=ReQOIZKuq38' },
+    { date:'24.08', title:'Cheers for Music · TMEA 2025',          type:EVENT_TYPES.stage,      members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'29.08', title:'Lotus Fan Meeting',                     type:EVENT_TYPES.fanmeet,    members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+    { date:'29.08', title:'Release · Track 4',                     type:EVENT_TYPES.release,    members:['dorn','thio','huyetao','shen','omar','xiong','yao'], images:[], youtube:'' },
+  ];
+
+  // เติมรูป placeholder ถ้ายังไม่ได้ใส่
+  scheduleEvents.forEach(ev => {
+    if (!ev.images || ev.images.length === 0) {
+      ev.images = [
+        'https://placehold.co/1200x800?text=' + encodeURIComponent(ev.title),
+        'https://placehold.co/1200x800?text=' + encodeURIComponent(ev.title + ' · 2'),
+      ];
+    }
+  });
+
+    const discography = [
+      { type:'Debut Single', title:'NexT1DE', url:'https://www.youtube.com/watch?v=Z_go-nKzsD4' },
+      { type:'Cover',  title:'Just Say Hello', url:'https://www.youtube.com/watch?v=IpI1NRgVpDg' },
+      { type:'Cover',  title:'晚风定义 Evening Breeze', url:'https://www.youtube.com/watch?v=Uji2ue3zHDgj' },
+      { type:'Album One Heart New Adventure', title:'奔跑在地球的小孩', url:'https://www.youtube.com/watch?v=AQcup_hya_U&list=RDAQcup_hya_U&start_radio=1' },
+      { type:'Album One Heart New Adventure', title:'薄荷夏天Chemistry', url:'https://www.youtube.com/watch?v=lqLOrgEEfI0&list=PLTc4z-cxNxhMOHfN7EcZnLjDivtr2zjby&index=7' },
+      { type:'Album One Heart New Adventure', title:'Take it Easy （大不了）', url:'https://www.youtube.com/watch?v=ReQOIZKuq38&list=PLTc4z-cxNxhMOHfN7EcZnLjDivtr2zjby&index=10' },
+      { type:'Album One Heart New Adventure', title:'Always with You', url:'https://www.youtube.com/watch?v=Fqd8P38IwuQ&list=PLTc4z-cxNxhMOHfN7EcZnLjDivtr2zjby&index=14' },
+    ];
+
+    const gallery = [
+      "./nt1-1.jpg","./nt1-2.jpg","./nt1-3.jpg","./nt1-4.jpg","./nt1-5.jpg",
+      "./nt1-6.jpg","./nt1-7.jpg","./nt1-8.jpg","./nt1-9.jpg","./nt1-10.jpg",
+    ];
+
+    // ===== i18n =====
+    const i18n = {
+      th: { nav_about:"ข้อมูลวง", nav_members:"สมาชิก", nav_discog:"ผลงานเพลง", nav_gallery:"แกลเลอรี", lang:"ภาษา", hero_tag:"Official Fan Info",
+            group_name_label:"ชื่อวง", meaning_label:"ความหมายของชื่อวง", debut_label:"ก่อตั้ง / เดบิวต์", members_count_label:"จำนวนสมาชิก",
+            agency_label:"สังกัด", fandom_label:"อิโมจิ / แฟนคลับ", colors_label:"สีประจำวง", emoji_label:"อิโมจิ", socials_label:"ช่องทางหลัก", position:"ตำแหน่ง",
+            discography_title:"ผลงานเพลงทั้งหมด", gallery_title:"แกลเลอรี",
+            nav_schedule: "ตารางงาน",
+            schedule_title: "ตารางงาน",
+            event_date_label: "วันที่",
+            event_members_label: "สมาชิก",
+            filter_all: "ทั้งหมด",
+            filter_show: "รายการ",
+            filter_stage: "stage",
+            filter_celebrate: "celebrate",
+            filter_fanmeet: "fan meet",
+            filter_release: "release",
+            cal_today: "เดือนนี้",
+            weekday_labels: ["จ","อ","พ","พฤ","ศ","ส","อา"],   // จันทร์เริ่มต้น
+            month_names: ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"],
+            },
+      en: { nav_about:"About", nav_members:"Members", nav_discog:"Discography", nav_gallery:"Gallery", lang:"Language", hero_tag:"Official Fan Info",
+            group_name_label:"Group Name", meaning_label:"Name Meaning", debut_label:"Founded / Debut", members_count_label:"Members",
+            agency_label:"Agency", fandom_label:"Emoji / Fandom", colors_label:"Group Colors", emoji_label:"Emoji", socials_label:"Official Channels", position:"Position",
+            discography_title:"Complete Discography", gallery_title:"Gallery",
+            nav_schedule: "Schedule",
+            schedule_title: "Schedule",
+            event_date_label: "Date",
+            event_members_label: "Members",
+            filter_all: "All",
+            filter_show: "Shows",
+            filter_stage: "Stage",
+            filter_celebrate: "Celebrate",
+            filter_fanmeet: "Fan meet",
+            filter_release: "Release",
+            cal_today: "This month",
+            weekday_labels: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+            month_names: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+            },
+      zh: { nav_about:"组合资料", nav_members:"成员", nav_discog:"音乐作品", nav_gallery:"相册", lang:"语言", hero_tag:"官方应援资料",
+            group_name_label:"组合名", meaning_label:"团名含义", debut_label:"成立 / 出道", members_count_label:"成员数",
+            agency_label:"经纪公司", fandom_label:"表情符号 / 粉丝名", colors_label:"团体配色", emoji_label:"表情符号", socials_label:"官方账号", position:"在团内的定位",
+            discography_title:"全部音乐作品", gallery_title:"相册",
+            nav_schedule: "行程",
+            schedule_title: "行程",
+            event_date_label: "日期",
+            event_members_label: "成员",
+            filter_all: "全部",
+            filter_show: "节目",
+            filter_stage: "舞台",
+            filter_celebrate: "庆祝",
+            filter_fanmeet: "粉丝见面会",
+            filter_release: "发行",
+            cal_today: "本月",
+            weekday_labels: ["一","二","三","四","五","六","日"],   // 周一开始
+            month_names: ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+            },
+    };
+
+    // ===== About section content (multilingual) =====
+    const aboutContent = {
+      groupName: {
+        th: 'NexT1DE (NT1) / เน็กซ์ไทด์',
+        en: 'NexT1DE (NT1)',
+        zh: 'NexT1DE (NT1)',
+      },
+      meaning: {
+        th: `NexT1DE มาจากคำว่า <b>Next + Tide</b><br/> หมายถึง “<b>คลื่นลูกใหม่แห่งยุคต่อไป</b>”<br/>
+            สื่อถึงพลังของคนรุ่นใหม่ที่รวมตัวกันเป็นหนึ่งเดียว พร้อมขับเคลื่อนความฝันและสร้างแรงบันดาลใจให้โลกด้วยพลังที่ไม่มีวันหยุดนิ่ง`,
+        en: `NexT1DE comes from <b>“Next + Tide.”</b><br/>
+            It means “<b>The next wave</b>.”<br/>
+            It represents the power of a new generation — united as one, moving forward with unstoppable energy, passion, and dreams to inspire the world.`,
+        zh: `NexT1DE 源自 <b>“Next + Tide”</b>，<br/>
+            意思是「<b>新一代的浪潮</b>」。<br/>
+            象征着新世代的力量，凝聚为一体，像潮水一样不断向前，用梦想与热情激励世界。`,
+      },
+      debut: {
+        th: [
+          'จากรายการ CHUANG ASIA2 (WeTV)',
+          'เดบิวต์วันที่ 6 เมษายน 2568',
+        ],
+        en: [
+          'From the show CHUANG ASIA2 (WeTV)',
+          'Debuted on April 6, 2025',
+        ],
+        zh: [
+          '出自节目《CHUANG ASIA 第二季》（WeTV）',
+          '于2025年4月6日出道',
+        ],
+      },
+      agency: {
+        th: 'Tencent Music Entertainment (TME)',
+        en: 'Tencent Music Entertainment (TME)',
+        zh: 'Tencent Music Entertainment (TME)',
+      },
+      fandom: {
+        th: '🌊 / Ohna (โอนา)',
+        en: '🌊 / Ohna',
+        zh: '🌊 / Ohna',
+      },
+    };
+
+
+    // เติมเนื้อหาให้ส่วน about ตามภาษา
+    function applyAboutContent(lang = currentLang) {
+      const L = (k) => (aboutContent[k]?.[lang]) ?? '';
+      const setText  = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+      const setHTML  = (id, html)=> { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+
+      setText('aboutGroupName', L('groupName'));
+      setHTML('aboutMeaning',   L('meaning')); // มีบรรทัด/ตัวหนา ใช้ innerHTML
+      setText('aboutAgency',    L('agency'));
+      setText('aboutFandom',    L('fandom'));
+
+      const debutEl = document.getElementById('aboutDebut');
+      const lines = aboutContent.debut[currentLang];
+
+      if (Array.isArray(lines)) {
+        debutEl.innerHTML = `<ul class="list-disc list-inside space-y-1 text-white">
+          ${lines.map(line => `<li>${line}</li>`).join('')}
+        </ul>`;
+      } else {
+        debutEl.textContent = lines;
+      }
+
+    }
+
+    let currentLang = 'th';
+
+    // ===== Helpers =====
+    const fmtDate = (iso) => {
+      try {
+        const d = new Date(iso);
+        const isTH = currentLang === 'th';
+        const locale =
+          currentLang === 'zh' ? 'zh-CN' :
+          isTH ? 'th-TH-u-ca-gregory' : 'en-US';
+
+        return new Intl.DateTimeFormat(locale, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          ...(isTH ? { calendar: 'gregory', numberingSystem: 'latn' } : {})
+        }).format(d);
+      } catch {
+        return iso;
+      }
+    };
+  const el = (tag, cls) => { const x = document.createElement(tag); if(cls) x.className = cls; return x; };
+    
+    function socialItem({ iconUrl, url, handle }) {
+      const a = el('a','inline-flex items-center justify-center w-6 h-6 rounded-full overflow-hidden bg-white/15 hover:bg-white/25 transition ring-1 ring-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70');
+      a.href = url; a.target = '_blank'; a.rel = 'noreferrer'; a.setAttribute('aria-label', handle || 'social');
+      const ic = el('img','w-full h-full object-cover'); ic.src = iconUrl; ic.alt = handle || 'logo';
+      a.append(ic); return a;
+    }
+
+    // Group & Footer Socials
+    const groupSocWrap = document.getElementById('groupSocials');
+    groupSocWrap.className = 'flex flex-wrap items-center gap-2';
+    groupSocWrap.innerHTML = '';
+    groupSocials.forEach(s => groupSocWrap.append(socialItem(s)));
+
+    const footerSocWrap = document.getElementById('footerSocials');
+    footerSocWrap.className = 'flex flex-wrap items-center gap-2';
+    footerSocWrap.innerHTML = '';
+    mySocials.forEach(s => footerSocWrap.append(socialItem(s)));
+
+    // Avatar strip
+    function renderAvatarStrip(){
+      const strip = document.getElementById('avatarStrip');
+      strip.innerHTML = '';
+      members.forEach(m=>{
+        const loc = m.locale[currentLang] || m.locale.en; // fallback EN
+        const shortname = loc.shortname || m.locale.en.shortname;
+
+       const link = el('a','flex flex-col items-center gap-1'); 
+        link.href = `#member-${m.id}`;
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          scrollToWithOffset(`member-${m.id}`);
+        });
+        const avatarWrap = el('div','rounded-full ring-2 ring-white/60 p-0.5');
+        const avatar = el('img','rounded-full object-cover object-top w-12 h-12 sm:w-16 sm:h-16');
+        avatar.src = m.image; avatar.alt = shortname;
+        const name = el('div','text-[10px] sm:text-xs font-medium text-white/95'); name.textContent = shortname;
+        avatarWrap.append(avatar); link.append(avatarWrap, name); strip.append(link);
+      });
+      strip.classList.add('justify-between');
+      const mq = window.matchMedia('(min-width: 1024px)');
+      function centerDesktop(){ strip.classList.toggle('justify-center', mq.matches); strip.classList.toggle('gap-4', mq.matches); }
+      centerDesktop(); mq.addEventListener('change', centerDesktop);
+    }
+    // ---- labels สำหรับ 3 ภาษา (เพิ่มไว้ใกล้ๆ i18n เดิม) ----
+    const mLabel = {
+      position:   { th: 'ตำแหน่ง',          en: 'Position',         zh: '职位' },
+      nationality:{ th: 'สัญชาติ',          en: 'Nationality',      zh: '国籍' },
+      birthday:   { th: 'วันเกิด',          en: 'Birthday',         zh: '生日' },
+      height:     { th: 'ส่วนสูง',          en: 'Height',           zh: '身高' },
+      bloodType:  { th: 'กรุ๊ปเลือด',       en: 'Blood Type',       zh: '血型' },
+      mbti:       { th: 'MBTI',             en: 'MBTI',             zh: 'MBTI' },
+      hobby:      { th: 'งานอดิเรก',        en: 'Hobby',            zh: '爱好' },
+      favoriteColor:  { th: 'สีโปรด',       en: 'Favorite Color',   zh: '喜欢的颜色' },
+      favoriteAnimal: { th: 'สัตว์โปรด',    en: 'Favorite Animal',  zh: '喜欢的动物' },
+      favoriteFood:   { th: 'อาหารโปรด',    en: 'Favorite Food',    zh: '喜欢的食物' },
+      fandom:     { th: 'อิโมจิ / แฟนดอม',   en: 'Emoji / Fandom',   zh: '表情符号 / 应援名' },
+    };
+
+    // ---- helpers ----
+    const L = (key) => (mLabel[key]?.[currentLang] || mLabel[key]?.en || key);
+    const splitList = (txt) => (txt ? String(txt).split(',').map(s => s.trim()).filter(Boolean) : []);
+    function chip(label, value){
+      if(!value) return null;
+      const w = el('span', 'chip inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-2 py-1 text-[11px] text-slate-700');
+      const b = el('span','font-medium'); b.textContent = label + ':';
+      const v = el('span'); v.textContent = value;
+      w.append(b, v);
+      return w;
+    }
+
+    function scrollToWithOffset(elOrId, extra = 12) {
+      const el = typeof elOrId === 'string' ? document.getElementById(elOrId) : elOrId;
+      if (!el) return;
+      const nav = document.getElementById('siteNav');
+      const offset = (nav?.offsetHeight || 64) + extra; // กันบังอีกนิด
+      const y = el.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+
+    // ให้ลิงก์ "สมาชิก" พาไป member-strip พร้อม offset และปิดเมนูมือถือ
+    function bindMembersLinkScroll() {
+      const targets = document.querySelectorAll('a[href="#members"], a[data-i18n="nav_members"]');
+      const memberStrip = document.getElementById('member-strip');
+      const hamBtn = document.getElementById('hamburgerBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const iconOpen  = document.getElementById('iconOpen');
+      const iconClose = document.getElementById('iconClose');
+
+      targets.forEach(a => {
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (memberStrip) scrollToWithOffset(memberStrip, 12);
+
+          // ปิดเมนูมือถือถ้าเปิดอยู่
+          if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            hamBtn?.setAttribute('aria-expanded','false');
+            iconOpen?.classList.remove('hidden');
+            iconClose?.classList.add('hidden');
+          }
+        });
+      });
+    }
+
+    // ช่วยฟอร์แมตลิสต์ให้เป็น "A / B / C"
+    function slashList(v){
+      if (!v) return '';
+      return String(v)
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean)
+        .join(' / ');
+    }
+
+    function renderMembers(){
+      const grid = document.getElementById('membersGrid');
+      grid.innerHTML = '';
+      const lightbox = getMemberLightbox();
+      const lbImg = lightbox.querySelector('#lbImg');
+
+      members.forEach(m => {
+        const loc = m.locale[currentLang] || m.locale.en;
+        const stage = loc.stage || m.locale.en.stage;
+        const fullname = (loc.fullname && loc.fullname.trim()) ? loc.fullname : '';
+        const position = loc.position || m.locale.en.position;
+        const nationality = loc.nationality || m.locale.en.nationality;
+        const fandom = (loc.fandom ?? '').trim();
+        const height = loc.height || loc.Height || '';
+        const bloodType = loc.bloodType || '';
+        const mbti = loc.mbti || '';
+
+        // การ์ดหลัก
+        const card = el('article','overflow-hidden rounded-2xl border border-white/40 bg-white/10 backdrop-blur-md shadow-xl');
+        card.id = `member-${m.id}`;
+
+        // mobile: 1 คอลัมน์, md+: 2 คอลัมน์
+        const wrap = el('div','grid grid-cols-1 md:grid-cols-[2fr_3fr]');
+
+        // ===== LEFT: IMAGE =====
+        const imgBox = el('div','p-3 md:p-4 order-1');
+        // ใช้ aspect บนมือถือ และโค้งซ้ายบน/ล่างบน md+
+        const ratio  = el('div','relative w-full overflow-hidden rounded-xl bg-white/60 aspect-[2/3] md:h-full md:aspect-auto md:rounded-l-2xl md:rounded-r-none');
+        const btn    = el('button','relative w-full h-full group'); btn.type='button';
+        btn.setAttribute('aria-label', `ดูภาพ ${stage}`);
+
+        const img    = el('img','h-full w-full object-cover object-center transition-transform duration-200 group-hover:scale-[1.05]');
+        img.src = m.image; img.alt = stage + ' portrait';
+
+        const zoom   = el('div','pointer-events-none absolute bottom-2 right-2 rounded-md bg-black/40 text-white text-[11px] px-2 py-1 opacity-0 group-hover:opacity-100 transition');
+        zoom.textContent = 'คลิกเพื่อขยาย';
+
+        btn.append(img, zoom); ratio.append(btn); imgBox.append(ratio);
+        btn.addEventListener('click', () => { lbImg.src = m.image; lbImg.alt = stage + ' preview'; lightbox.classList.remove('hidden'); });
+
+        // ===== RIGHT: CONTENT (พื้นหลังสูงเต็มการ์ด + scroll ภายในถ้ายาวเกิน) =====
+        const content = el('div','bg-white/85 text-slate-900 p-5 md:p-7 flex flex-col gap-4 order-2 overflow-y-auto');
+        content.style.maxHeight = '100%';
+
+        const head = el('div','flex flex-col gap-1');
+        const title = el('h3','text-2xl md:text-3xl font-extrabold leading-tight'); 
+        title.textContent = loc.shortname ? `${loc.shortname} · ${stage}` : stage;
+        const sub   = el('p','text-sm text-slate-700'); sub.textContent = fullname;
+        head.append(title, sub);
+
+        // Chips
+        const chipsRow = el('div','flex flex-wrap items-center gap-2');
+        const chip = (label, value)=>{
+          if(!value) return null;
+          const w = el('span','chip inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-2 py-1 text-[11px] text-slate-700');
+          const b = el('span','font-medium'); b.textContent = label + ':';
+          const v = el('span'); v.textContent = value;
+          w.append(b,v); return w;
+        };
+        [
+          chip(mLabel.position?.[currentLang] || 'Position', position),
+          chip(mLabel.nationality?.[currentLang] || 'Nationality', nationality),
+          chip(mLabel.height?.[currentLang] || 'Height', height),
+          chip(mLabel.bloodType?.[currentLang] || 'Blood Type', bloodType),
+          chip('MBTI', mbti)
+        ].forEach(c => c && chipsRow.append(c));
+
+        // Info list
+        const dl = el('dl','grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm');
+        const infoItem = (label, value) => {
+          const d = el('div');
+          const l = el('div','text-[11px] uppercase tracking-wide text-slate-500'); l.textContent = label;
+          const v = el('div','text-slate-900 leading-relaxed'); v.textContent = value && String(value).trim() ? value : '-';
+          d.append(l,v); return d;
+        };
+        const slashList = (v)=> !v ? '' : String(v).split(',').map(s => s.trim()).filter(Boolean).join(' / ');
+
+        dl.append(
+          infoItem(mLabel.birthday?.[currentLang] || 'Birthday', fmtDate(m.birthday)),
+          infoItem(mLabel.fandom?.[currentLang]   || 'Emoji / Fandom', fandom),
+          infoItem(mLabel.hobby?.[currentLang]    || 'Hobby',           slashList(loc.hobby)),
+          infoItem(mLabel.favoriteColor?.[currentLang]  || 'Favorite Color',  slashList(loc.favoriteColor)),
+          infoItem(mLabel.favoriteAnimal?.[currentLang] || 'Favorite Animal', slashList(loc.favoriteAnimal)),
+          infoItem(mLabel.favoriteFood?.[currentLang]   || 'Favorite Food',   slashList(loc.favoriteFood)),
+        );
+
+        const socials = el('div','flex flex-wrap items-center gap-2 pt-1');
+        m.socials.forEach(s => socials.append(socialItem(s)));
+
+        content.append(head, chipsRow, dl, socials);
+
+        wrap.append(imgBox, content);
+        card.append(wrap);
+        grid.append(card);
+
+        // จับความสูงของรูปแล้วตั้งความสูงให้ content เท่ากัน
+        const syncHeights = () => {
+          if (window.innerWidth < 768) {
+            content.style.height = '';
+            return;
+          }
+          const imgH = imgBox.offsetHeight;
+          content.style.height = imgH + 'px';
+        };
+        window.addEventListener('resize', syncHeights);
+        setTimeout(syncHeights, 200);
+        if (img.complete) syncHeights();
+        else img.onload = syncHeights;
+      });
+    }
+
+
+
+    function syncMemberHeights(card){
+      const imgWrap = card.querySelector('.js-imgwrap');
+      const content = card.querySelector('.js-content');
+      if(!imgWrap || !content) return;
+
+      // ใช้เฉพาะ md+ (>=768px): ให้ content สูงเท่าภาพและ scroll ภายใน
+      const isMdUp = window.matchMedia('(min-width: 768px)').matches;
+      if (isMdUp){
+        const h = imgWrap.getBoundingClientRect().height;
+        content.style.maxHeight = h ? (h + 'px') : '';
+        content.style.overflowY = 'auto';
+      } else {
+        // mobile: ปล่อยตามธรรมชาติ
+        content.style.maxHeight = '';
+        content.style.overflowY = '';
+      }
+    }
+
+    // debounce กัน resize ยิงถี่
+    function debounce(fn, wait=120){
+      let t; 
+      return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn.apply(null,args), wait); };
+    }
+
+
+    // Member lightbox (one-time)
+    function getMemberLightbox(){
+      let box = document.getElementById('memberLightbox');
+      if (!box) {
+        box = document.createElement('div');
+        box.id = 'memberLightbox';
+        box.className = 'fixed inset-0 z-[999] hidden bg-black/80 backdrop-blur-sm';
+        box.innerHTML = `
+          <button id="lbClose" class="absolute top-3 right-3 text-white/80 hover:text-white text-2xl leading-none px-3 py-1" aria-label="Close">×</button>
+          <div class="w-full h-full flex items-center justify-center p-3">
+            <img id="lbImg" class="max-h-[90vh] max-w-[90vw] object-contain rounded-xl shadow-2xl" alt="Member preview"/>
+          </div>`;
+        document.body.appendChild(box);
+        const hide = () => box.classList.add('hidden');
+        box.addEventListener('click', (e) => { if (e.target === box) hide(); });
+        box.querySelector('#lbClose').addEventListener('click', hide);
+        document.addEventListener('keydown', (e) => { if (!box.classList.contains('hidden') && e.key === 'Escape') hide(); });
+      }
+      return box;
+    }
+
+    // Discography
+    function ytId(url){ try { const u=new URL(url); if(u.hostname.includes('youtu.be')) return u.pathname.slice(1); const v=u.searchParams.get('v'); if(v) return v; const parts=u.pathname.split('/').filter(Boolean); return parts.pop(); } catch { return ''; } }
+    function renderDiscog({ scrollOnSelect = (window.innerWidth < 1024) } = {}){
+      const list = document.getElementById('discogList');
+      const iframe = document.getElementById('discogIframe');
+      const titleEl = document.getElementById('discogTitle');
+      const previewWrap = document.getElementById('discogPreview');
+      list.innerHTML = '';
+
+      discography.forEach((d,i)=>{
+        const li = el('li','rounded-xl border border-white/20 bg-white/70 hover:bg-white/80 transition text-slate-900');
+        const btn = el('button','w-full text-left px-3 py-2 rounded-xl');
+        const top = el('div','text-[10px] uppercase tracking-wide text-slate-500'); top.textContent = d.type;
+        const name = el('div','text-sm font-semibold text-slate-900'); name.textContent = d.title;
+        btn.append(top, name); li.append(btn); list.append(li);
+        btn.addEventListener('click', ()=> select(i, true));
+      });
+
+      function select(i, userClick = false){
+        const d = discography[i]; const id = ytId(d.url);
+        iframe.src = id ? `https://www.youtube.com/embed/${id}` : d.url;
+        titleEl.textContent = d.title;
+
+        [...list.children].forEach((li, idx) => {
+          const isActive = idx === i;
+          li.classList.toggle('bg-white', isActive);
+          li.classList.toggle('bg-white/70', !isActive);
+          li.classList.toggle('ring-1', isActive);
+          li.classList.toggle('ring-slate-300', isActive);
+          li.classList.toggle('border-slate-200', isActive);
+          li.classList.toggle('border-white/20', !isActive);
+        });
+
+        if (userClick) { scrollToWithOffset(previewWrap); }
+      }
+      select(0, false);
+    }
+
+    // Gallery (unchanged logic, packaged)
+    function aspectClassByWH(w, h) {
+      if (!w || !h) return 'aspect-[3/4]';
+      const r = w / h;
+      if (r > 1.15) return 'aspect-video';
+      if (r < 0.9)  return 'aspect-[3/4]';
+      return 'aspect-square';
+    }
+    let gi = 0, autoTimer = null, isHover = false;
+    function renderThumbs() {
+      const t = document.getElementById('thumbs'); t.innerHTML = '';
+      gallery.forEach((src, i) => {
+        const b = el('button', 'rounded-md overflow-hidden border ' + (i === gi ? 'border-slate-900' : 'border-slate-300'));
+        const box = el('div', 'aspect-square w-full'); const im  = el('img', 'h-full w-full object-cover object-center');
+        im.src = src; im.alt = 'thumb ' + (i + 1); b.append(box); box.append(im);
+        b.addEventListener('click', () => { gi = i; updateMain(true); });
+        t.append(b);
+      });
+    }
+    function updateMain(stopAuto) {
+      const main   = document.getElementById('galleryMain');
+      const wrap   = document.getElementById('galleryAspect');
+      const src    = gallery[gi];
+      const probe = new Image();
+      probe.onload = () => {
+        wrap.classList.remove('aspect-[3/4]', 'aspect-video', 'aspect-square');
+        wrap.classList.add(aspectClassByWH(probe.naturalWidth, probe.naturalHeight));
+        main.src = src; main.alt = 'NexT1DE Gallery ' + (gi + 1);
+        renderThumbs(); if (stopAuto) restartAuto();
+      };
+      probe.onerror = () => { main.src = src; renderThumbs(); if (stopAuto) restartAuto(); };
+      probe.src = src;
+    }
+    function prev(){ gi = (gi - 1 + gallery.length) % gallery.length; updateMain(true); }
+    function next(){ gi = (gi + 1) % gallery.length; updateMain(true); }
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next);
+    const area = document.getElementById('galleryArea');
+    let touchX = null;
+    area.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; showButtonsTemporarily(); });
+    area.addEventListener('touchend',   (e) => { if (touchX == null) return; const dx = e.changedTouches[0].clientX - touchX; if (Math.abs(dx) > 40) { dx > 0 ? prev() : next(); } touchX = null; });
+    area.addEventListener('mouseenter', ()=>{ isHover = true;  restartAuto(); });
+    area.addEventListener('mouseleave', ()=>{ isHover = false; restartAuto(); });
+    area.addEventListener('click', showButtonsTemporarily);
+    function showButtonsTemporarily(){ prevBtn.classList.remove('opacity-0'); nextBtn.classList.remove('opacity-0'); setTimeout(()=>{ if(!isHover){ prevBtn.classList.add('opacity-0'); nextBtn.classList.add('opacity-0'); } }, 1200); }
+    function restartAuto(){ if(autoTimer) clearInterval(autoTimer); if(!isHover){ autoTimer = setInterval(()=> next(), 4000); } }
+
+    // Language switching
+    function applyLangTexts(){ document.querySelectorAll('[data-i18n]').forEach(elm=>{ const key=elm.getAttribute('data-i18n'); const pack=i18n[currentLang]; if(pack && pack[key]) elm.textContent = pack[key]; }); }
+    function setLang(code){
+      const keepY = window.scrollY;
+      currentLang = code;
+
+      document.querySelectorAll('#langButtons button[data-lang], #langButtonsMobile button[data-lang]')
+        .forEach(btn => btn.setAttribute('aria-pressed', String(btn.getAttribute('data-lang') === code)));
+
+      applyLangTexts();
+      applyAboutContent(code);
+
+      renderAvatarStrip();
+      renderMembers();
+      renderDiscog();
+      renderScheduleUI(); // รีเฟรชชื่อวัน/เดือน/ฟิลเตอร์ตามภาษา
+      window.scrollTo({ top: keepY });
+    }
+
+  // ===== Schedule Render & Modal =====
+    const FILTER_ORDER = [
+      EVENT_TYPES.all,
+      EVENT_TYPES.show,
+      EVENT_TYPES.stage,
+      EVENT_TYPES.celebrate,
+      EVENT_TYPES.fanmeet,
+      EVENT_TYPES.release,
+    ];
+
+    function labelForFilter(type) {
+      const pack = i18n[currentLang];
+      switch(type){
+        case EVENT_TYPES.all: return pack?.filter_all || 'All';
+        case EVENT_TYPES.show: return pack?.filter_show || 'Show';
+        case EVENT_TYPES.stage: return pack?.filter_stage || 'Stage';
+        case EVENT_TYPES.celebrate: return pack?.filter_celebrate || 'Celebrate';
+        case EVENT_TYPES.fanmeet: return pack?.filter_fanmeet || 'Fan meet';
+        case EVENT_TYPES.release: return pack?.filter_release || 'Release';
+        default: return String(type);
+      }
+    }
+
+    // ===== Calendar (Schedule) =====
+    let calFilter = EVENT_TYPES.all;
+    // เริ่มเดือน: ถ้าเครื่องอยู่ปีเดียวกับ YEAR_BASE => เดือนปัจจุบัน, ไม่งั้นเริ่มเมษายน (index 3)
+    let calYear  = (new Date().getFullYear() === YEAR_BASE) ? new Date().getFullYear() : YEAR_BASE;
+    let calMonth = (new Date().getFullYear() === YEAR_BASE) ? new Date().getMonth() : 3; // 0=Jan
+
+    function labelForFilter(type) {
+      const pack = i18n[currentLang];
+      switch(type){
+        case EVENT_TYPES.all: return pack?.filter_all || 'All';
+        case EVENT_TYPES.show: return pack?.filter_show || 'Show';
+        case EVENT_TYPES.stage: return pack?.filter_stage || 'Stage';
+        case EVENT_TYPES.celebrate: return pack?.filter_celebrate || 'Celebrate';
+        case EVENT_TYPES.fanmeet: return pack?.filter_fanmeet || 'Fan meet';
+        case EVENT_TYPES.release: return pack?.filter_release || 'Release';
+        default: return String(type);
+      }
+    }
+
+    function renderWeekdayHeader() {
+      const head = document.getElementById('weekdayHeader');
+      const labels = i18n[currentLang]?.weekday_labels || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      head.innerHTML = '';
+      labels.forEach(txt => {
+        const d = document.createElement('div');
+        d.className = 'text-center py-1';
+        d.textContent = txt;
+        head.appendChild(d);
+      });
+    }
+
+    function monthLabel(y, m) {
+      const names = i18n[currentLang]?.month_names;
+      if (Array.isArray(names) && names[m]) return `${names[m]} ${y}`;
+      return new Intl.DateTimeFormat(currentLang === 'zh' ? 'zh-CN' : (currentLang === 'th' ? 'th-TH' : 'en-US'), { month:'long', year:'numeric' }).format(new Date(y, m, 1));
+    }
+
+    function eventsByDay(y, m) {
+      // คืน Map<Int day → Array<Event>>
+      const map = new Map();
+      scheduleEvents.forEach(ev => {
+        const d = parseDDMM(ev.date, YEAR_BASE);
+        if (!d || isNaN(d)) return;
+        if (d.getFullYear() !== y || d.getMonth() !== m) return;
+        if (calFilter !== EVENT_TYPES.all && ev.type !== calFilter) return;
+        const day = d.getDate();
+        if (!map.has(day)) map.set(day, []);
+        map.get(day).push(ev);
+      });
+      return map;
+    }
+
+    function renderCalendarUI() {
+      // ป้ายเดือน
+      document.getElementById('calLabel').textContent = monthLabel(calYear, calMonth);
+
+      // ปุ่มกรอง
+      const fwrap = document.getElementById('scheduleFilters');
+      fwrap.innerHTML = '';
+      [EVENT_TYPES.all, EVENT_TYPES.show, EVENT_TYPES.stage, EVENT_TYPES.celebrate, EVENT_TYPES.fanmeet, EVENT_TYPES.release]
+        .forEach(t => {
+          const b = document.createElement('button');
+          b.className =
+            'px-3 py-1.5 rounded-full text-sm ring-1 transition ' +
+            (t === calFilter
+              ? 'bg-white text-slate-900 ring-slate-300'
+              : 'bg-white/10 text-white ring-white/40 hover:bg-white/20');
+          b.textContent = labelForFilter(t);
+          b.addEventListener('click', () => { calFilter = t; renderCalendarUI(); });
+          fwrap.appendChild(b);
+        });
+
+      // ส่วนหัววันในสัปดาห์
+      renderWeekdayHeader();
+
+      // กริดวัน
+      const grid = document.getElementById('calendarGrid');
+      grid.innerHTML = '';
+
+      const first = new Date(calYear, calMonth, 1);
+      const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+      // ทำให้สัปดาห์เริ่ม "จันทร์": (Sun=0 → 6, Mon=1 → 0, ...)
+      const startOffset = (first.getDay() + 6) % 7;
+
+      const map = eventsByDay(calYear, calMonth);
+
+      // ช่องว่างก่อนวันที่ 1
+      for (let i = 0; i < startOffset; i++) {
+        const blank = document.createElement('div');
+        blank.className = 'rounded-lg min-h-[90px] sm:min-h-[110px]';
+        grid.appendChild(blank);
+      }
+
+      // วนวันที่จริง
+      for (let d = 1; d <= daysInMonth; d++) {
+        const cell = document.createElement('div');
+        cell.className = 'rounded-xl border border-white/20 bg-white/10 backdrop-blur p-2 text-white flex flex-col gap-1';
+        // วันที่
+        const head = document.createElement('div');
+        head.className = 'text-xs font-semibold text-white/90';
+        head.textContent = d;
+        cell.appendChild(head);
+
+        const evs = map.get(d) || [];
+        if (evs.length) {
+          const list = document.createElement('div');
+          list.className = 'flex flex-col gap-1';
+          evs.forEach(ev => {
+            const tag = document.createElement('button');
+            tag.type = 'button';
+            tag.className = 'text-left text-[11px] leading-snug rounded-md bg-white/85 text-slate-900 hover:bg-white px-2 py-1';
+            tag.innerHTML = `<span class="font-semibold">${ev.title}</span><span class="opacity-60"> · ${labelForFilter(ev.type)}</span>`;
+            tag.addEventListener('click', (e) => { e.stopPropagation(); openEventModal(ev); });
+            list.appendChild(tag);
+          });
+          cell.appendChild(list);
+        } else {
+          const dim = document.createElement('div');
+          dim.className = 'text-[11px] text-white/50';
+          dim.textContent = '—';
+          cell.appendChild(dim);
+        }
+
+        grid.appendChild(cell);
+      }
+
+      // นำทางเดือน
+      document.getElementById('calPrev').onclick = () => {
+        if (calMonth === 0) { calMonth = 11; calYear--; } else { calMonth--; }
+        renderCalendarUI();
+      };
+      document.getElementById('calNext').onclick = () => {
+        if (calMonth === 11) { calMonth = 0; calYear++; } else { calMonth++; }
+        renderCalendarUI();
+      };
+      document.getElementById('calToday').onclick = () => {
+        calYear  = (new Date().getFullYear() === YEAR_BASE) ? new Date().getFullYear() : YEAR_BASE;
+        calMonth = (new Date().getFullYear() === YEAR_BASE) ? new Date().getMonth() : 3;
+        renderCalendarUI();
+      };
+    }
+
+    // รักษาชื่อเดิม เพื่อให้จุดเรียกเดิมใช้ได้
+    function renderScheduleUI() { renderCalendarUI(); }
+
+
+    function openEventModal(ev) {
+      const box = document.getElementById('eventModal');
+      const title = document.getElementById('evTitle');
+      const dateEl = document.getElementById('evDate');
+      const memEl = document.getElementById('evMembers');
+      const imgWrap = document.getElementById('evImages');
+      const vidWrap = document.getElementById('evVideoWrap');
+      const iframe = document.getElementById('evVideo');
+
+      title.textContent = ev.title;
+
+      // วันที่ (ใช้ fmtDate เดิม + เติมปี)
+      const d = parseDDMM(ev.date);
+      dateEl.textContent = d ? fmtDate(d.toISOString()) : ev.date;
+
+      // สมาชิก
+      memEl.textContent = (ev.members && ev.members.length)
+        ? ev.members.map(memberDisplayNameById).join(', ')
+        : '-';
+
+      // รูป
+      imgWrap.innerHTML = '';
+      ev.images.forEach(src => {
+        const b = document.createElement('button');
+        b.className = 'overflow-hidden rounded-lg border border-slate-200';
+        const box = document.createElement('div');
+        box.className = 'aspect-[4/3] w-full';
+        const im = document.createElement('img');
+        im.className = 'h-full w-full object-cover';
+        im.src = src;
+        im.alt = ev.title;
+        box.appendChild(im);
+        b.appendChild(box);
+        imgWrap.appendChild(b);
+        // เปิด Lightbox รวม (ใช้กล่องแกลเลอรีของสมาชิกก็ได้ แต่เพื่อความง่ายให้เปิดรูปแทน)
+        b.addEventListener('click', () => {
+          const glb = document.getElementById('galleryLightbox');
+          const glbImg = document.getElementById('glbImg');
+          if (glb && glbImg) {
+            glbImg.src = src;
+            glbImg.alt = ev.title;
+            glb.classList.remove('hidden');
+          }
+        });
+      });
+
+      // วิดีโอ
+      if (ev.youtube && ev.youtube.trim()) {
+        // แปลงเป็น embed
+        const id = (function ytId(url){ try { const u=new URL(url); if(u.hostname.includes('youtu.be')) return u.pathname.slice(1); const v=u.searchParams.get('v'); if(v) return v; const parts=u.pathname.split('/').filter(Boolean); return parts.pop(); } catch { return ''; } })(ev.youtube);
+        iframe.src = id ? `https://www.youtube.com/embed/${id}` : ev.youtube;
+        vidWrap.classList.remove('hidden');
+      } else {
+        iframe.src = '';
+        vidWrap.classList.add('hidden');
+      }
+
+      // เปิด modal
+      box.classList.remove('hidden');
+
+      // ปิด
+      const closeBtn = document.getElementById('evClose');
+      const close = () => { box.classList.add('hidden'); iframe.src = ''; };
+      closeBtn.onclick = close;
+      box.onclick = (e) => { if (e.target === box) close(); };
+      document.addEventListener('keydown', function onEsc(ev2){
+        if (ev2.key === 'Escape') { close(); document.removeEventListener('keydown', onEsc); }
+      });
+    }
+
+    // Init
+    function init(){
+      // bind hamburger
+      // === Mobile Menu Control ===
+      const hamBtn = document.getElementById('hamburgerBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+
+      const iconOpen  = document.getElementById('iconOpen');
+      const iconClose = document.getElementById('iconClose');
+
+      const isOpen = () => !mobileMenu.classList.contains('hidden');
+      const openMenu = () => {
+        mobileMenu.classList.remove('hidden');
+        hamBtn?.setAttribute('aria-expanded', 'true');
+        // ปิดเมื่อคลิกนอกเมนู
+        document.addEventListener('click', onDocClick);
+      };
+      const closeMenu = () => {
+        mobileMenu.classList.add('hidden');
+        hamBtn?.setAttribute('aria-expanded', 'false');
+        document.removeEventListener('click', onDocClick);
+      };
+      const toggleMenu = (e) => {
+        e?.stopPropagation?.(); // กัน event เด้งไป document
+        isOpen() ? closeMenu() : openMenu();
+      };
+      const onDocClick = (e) => {
+        // ถ้าคลิกนอกเมนูและไม่ได้คลิกปุ่ม hamburger → ปิด
+        if (!mobileMenu.contains(e.target) && e.target !== hamBtn) {
+          closeMenu();
+        }
+      };
+
+      // คลิกปุ่ม hamburger
+      hamBtn?.addEventListener('click', toggleMenu);
+
+      // คลิก "ลิงก์/ปุ่ม" ภายในเมนู → หุบเมนู (รวมถึงปุ่มภาษา)
+      mobileMenu.addEventListener('click', (e) => {
+        const interactive = e.target.closest('a, button, [role="menuitem"]');
+        if (interactive) closeMenu();
+      });
+
+      // ถ้าคุณมีปุ่มเปลี่ยนภาษาอยู่นอกเมนูด้วย ให้ bind เพิ่ม (เลือกได้)
+      document.querySelectorAll('[data-lang]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          // setLanguage(btn.dataset.lang); // ฟังก์ชันของคุณ
+          closeMenu();
+        });
+      });
+
+      // (ออปชัน) หากมีฟังก์ชันเปลี่ยนภาษาอยู่แล้ว ให้เรียก closeMenu() หลังเปลี่ยนเสมอ
+      // function setLanguage(lang) { ...; closeMenu(); }
+
+
+      // close mobile menu on nav click
+      mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        hamBtn.setAttribute('aria-expanded', 'false');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      }));
+
+      // language events (desktop + mobile)
+      document.querySelectorAll('#langButtons button[data-lang], #langButtonsMobile button[data-lang]')
+        .forEach(btn => btn.addEventListener('click', ()=> setLang(btn.getAttribute('data-lang'))));
+
+      renderAvatarStrip();
+      renderMembers();
+      renderDiscog();
+      updateMain(false); // gallery
+      applyLangTexts();
+      applyAboutContent('th');   // เติมค่าเริ่มภาษาไทย
+      setLang('th');
+      restartAuto();
+      bindMembersLinkScroll();
+      renderScheduleUI();
+    }
+    init();
+
+    (function () {
+      const nav = document.getElementById('siteNav');
+      if (!nav) return;
+
+      function applyNavStyle() {
+        const atTop = window.scrollY <= 8; // ยืดหยุ่นนิดหน่อย กันเด้ง
+        // สภาพโปร่งใส (ทับรูปปก)
+        nav.classList.toggle('bg-transparent',  atTop);
+        nav.classList.toggle('backdrop-blur-0', atTop);
+        nav.classList.toggle('border-transparent', atTop);
+
+        // สภาพกระจกเบลอ (ตอนสกรอล)
+        nav.classList.toggle('bg-black/40',  !atTop);
+        nav.classList.toggle('backdrop-blur-md', !atTop);
+        nav.classList.toggle('border-white/20', !atTop);
+        nav.classList.toggle('border-b', !atTop);
+      }
+
+      // เรียกครั้งแรก และอัปเดตเมื่อสกรอล/รีไซซ์
+      applyNavStyle();
+      window.addEventListener('scroll', applyNavStyle, { passive: true });
+      window.addEventListener('resize', applyNavStyle);
+      window.addEventListener('load', applyNavStyle);
+    })();
+
+    // ===== Fix: Gallery Lightbox close =====
+    (function bindGalleryLightboxClose(){
+      const glb = document.getElementById('galleryLightbox');
+      const glbClose = document.getElementById('glbClose');
+      if (!glb || !glbClose) return;
+      const hide = () => glb.classList.add('hidden');
+      glbClose.onclick = hide;
+      glb.addEventListener('click', (e) => { if (e.target === glb) hide(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !glb.classList.contains('hidden')) hide(); });
+    })();
+
+
+    // (เดิมมีตัวเรียกใช้ #langSelect ซึ่งไม่มีใน DOM ทำให้ error — ผมลบออกแล้ว)
+  </script>
+</body>
+</html>
