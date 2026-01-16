@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donate NT1 Project</title>
+
+  <!-- FONTS -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* ปรับความสูง panel ฝั่งซ้าย/ขวา บน Desktop ได้ที่นี่ */
+      --panel-h: 560px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans Thai', sans-serif;
+      color: #333; line-height: 1.6;
+      background-image:
+        linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)),
+        url('./bg-nt1.jpg'); /* ใช้รูปในโปรเจกต์ */
+      background-size: cover; background-position: center center;
+      background-repeat: no-repeat; background-attachment: fixed;
+      min-height: 100vh; padding: 20px 10px;
+    }
+
+    .wrapper { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+
+    /* Navigation Bar */
+    .toc-bar {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 12px;
+      padding: 20px 10px; margin: 20px;
+      background: rgba(255,255,255,.8); border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.1);
+    }
+    .toc-bar button {
+      font-family: 'Noto Sans Thai', sans-serif; font-weight: 600; font-size: 15px;
+      padding: 12px 24px; border: none; border-radius: 15px; color: white; cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,.2); transition: all .3s ease;
+    }
+    .toc-bar button:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+    .toc-bar button:active { transform: translateY(-1px); }
+    .btn-view { background: linear-gradient(135deg,#FF7043,#FF8A65); }
+    .btn-check { background: linear-gradient(135deg,#BA68C8,#CE93D8); }
+    .btn-contact { background: linear-gradient(135deg,#42A5F5,#66BB6A); }
+
+    /* Content Container */
+    .content-container {
+      background: rgba(255,255,255,.8);
+      border-radius: 25px; box-shadow: 0 10px 40px rgba(0,0,0,.15);
+      padding: 30px; margin-bottom: 25px;
+      /* เตรียมให้ยืดสูงได้ตอน desktop */
+      display: block;
+    }
+
+    /* Flex Layout */
+    .flex-layout { display: flex; flex-direction: column; gap: 20px; align-items: stretch; }
+
+    /* Progress Section */
+    .donation-section { text-align: center; display:flex; flex-direction:column; height:100%; }
+    .progress-stats {
+      display: flex; justify-content: space-around; margin-bottom: 25px; gap: 20px; flex-wrap: wrap;
+    }
+    .stat-block {
+      flex: 1; min-width: 150px; padding: 15px;
+      background: linear-gradient(135deg,#f0f4ff,#e8f0fe);
+      border-radius: 15px; box-shadow: 0 3px 10px rgba(0,0,0,.05);
+    }
+    .stat-block:first-child { background: linear-gradient(135deg,#e8f5e9,#f1f8e9); }
+    .stat-block > div:first-child { font-size: 14px; font-weight: 500; color: #666; margin-bottom: 8px; }
+    .stat-number { font-size: clamp(24px,6vw,42px); font-weight: 700; color: #286acd; display: block; margin-top: 5px; }
+
+    .remaining-text {
+      font-size: 18px; margin-bottom: 20px; font-weight: 500; padding: 10px; border-radius: 10px;
+      background: rgba(255,255,255,.5);
+    }
+    .remaining-red { color: #d32f2f; background: rgba(255,255,255,1); }
+    .remaining-green { color: #2e7d32; background: rgba(232,245,233,.8); }
+
+    /* Progress Bar */
+    .progress-container {
+      position: relative; height: 30px; background: #e0e0e0; border-radius: 20px; overflow: hidden; margin-bottom: 15px;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,.1);
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg,#286acd,#42a5f5,#66bb6a);
+      transition: width 1.5s ease-out; border-radius: 20px; position: relative;
+      box-shadow: 0 2px 10px rgba(40,106,205,.3);
+    }
+    .progress-bar-fill::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);
+      animation: shimmer 2s infinite;
+    }
+    @keyframes shimmer { 0% { transform: translateX(-100%);} 100% { transform: translateX(100%);} }
+
+    /* ===== Countdown (วัน : ชั่วโมง : นาที : วินาที) ===== */
+    .countdown-status {
+      text-align: center; padding: 24px 18px;
+      background: linear-gradient(135deg,#e3f2fd,#e8eaf6);
+      border-radius: 20px; margin: 20px 0;
+      /* กัน overflow ในจอเล็ก */
+      overflow: hidden;
+    }
+    .countdown-title {
+      font-size: 18px; color: #1976d2; margin-bottom: 12px; font-weight: 600;
+    }
+    .countdown-wrapper { 
+      display: inline-flex; align-items: stretch; gap: 12px; 
+      max-width: 100%; justify-content: center;
+    }
+
+    .time-box {
+      min-width: 86px; padding: 12px 12px; background: #fff; border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.08);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .digit {
+      font-weight: 800; font-size: clamp(28px,6vw,40px);
+      line-height: 1; color: #0d47a1; letter-spacing: 1px;
+      display: inline-block;
+    }
+    .label {
+      margin-top: 8px; font-size: 12px; color: #607d8b; font-weight: 700; letter-spacing: .3px;
+    }
+    .separator {
+      align-self: center;
+      font-size: clamp(24px,5.5vw,32px);
+      color: #d32f2f; font-weight: 800;
+      user-select: none;
+    }
+
+    /* Notice Box */
+    .notice {
+      background: linear-gradient(135deg,#e3f2fd,#e8f5e9);
+      border: 2px solid #90caf9; border-radius: 15px; padding: 20px; margin-bottom: 16px;
+      font-size: 15px; color: #444; line-height: 1.8; box-shadow: 0 3px 10px rgba(0,0,0,.05);
+    }
+    .notice a { color: #1976d2; text-decoration: none; font-weight: 600; border-bottom: 2px solid transparent; transition: border-color .3s; }
+    .notice a:hover { border-bottom-color: #1976d2; }
+
+    /* Table Area (fixed-height + scroll) */
+    .table-area{
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex: 1;
+      min-height: 0; /* สำคัญให้ลูก overflow ได้ */
+    }
+    .table-wrapper{
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.08);
+      background: #fff;
+    }
+
+    /* Table Styles */
+    #donationTable {
+      width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; 
+    }
+    #donationTable thead th {
+      position: sticky; top: 0; z-index: 1;
+      background: linear-gradient(135deg,#4fc3f7,#29b6f6); color: #fff; padding: 15px 10px; text-align: center;
+      font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: .5px;
+    }
+    #donationTable td { padding: 12px 10px; text-align: center; border-bottom: 1px solid #f0f0f0; font-size: 14px; background:#fff; }
+    #donationTable tbody tr { transition: all .3s ease; }
+    #donationTable tbody tr:hover { background: #f8f9fa; transform: scale(1.01); box-shadow: 0 2px 5px rgba(0,0,0,.05); }
+    #donationTable tbody tr:last-child td { border-bottom: none; }
+
+    /* Table column widths */
+    #donationTable th:nth-child(1), #donationTable td:nth-child(1) { width: 10%; }
+    #donationTable th:nth-child(2), #donationTable td:nth-child(2) { width: 20%; }
+    #donationTable th:nth-child(3), #donationTable td:nth-child(3) { width: 25%; }
+    #donationTable th:nth-child(4), #donationTable td:nth-child(4) { width: 20%; }
+    #donationTable th:nth-child(5), #donationTable td:nth-child(5) { width: 25%; }
+
+    /* Call to Action */
+    #call-to-action {
+      text-align: center; color: #286acd; font-size: 18px; font-weight: 600;
+      padding: 12px; background: linear-gradient(135deg,#e3f2fd,#e8eaf6); border-radius: 15px; display: none;
+    }
+
+    /* Pagination */
+    .pagination {
+      text-align: center; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+    }
+    .pagination button {
+      font-family: 'Noto Sans Thai', sans-serif; background: linear-gradient(135deg,#42a5f5,#66bb6a); color: #fff;
+      border: none; padding: 10px 16px; border-radius: 10px; cursor: pointer; transition: all .3s;
+      font-weight: 600; font-size: 14px; min-width: 40px;
+    }
+    .pagination button:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,.2); }
+    .pagination button.active { background: linear-gradient(135deg,#1976d2,#1565c0); transform: scale(1.1); box-shadow: 0 4px 15px rgba(25,118,210,.4); }
+
+    /* Bottom Big Image */
+    .bottom-hero{
+      max-width: 1200px;
+      margin: 10px auto 0;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,.15);
+    }
+    .bottom-hero img{
+      display:block; width:100%; height:auto;
+    }
+
+    /* Responsive */
+    @media (min-width: 768px) {
+      .flex-layout { flex-direction: row; align-items: stretch; gap: 30px; }
+      .left-panel, .right-panel { flex: 1; display:flex; }
+      /* ทำให้สองกล่องสูงเท่ากัน */
+      .left-panel .content-container,
+      .right-panel .content-container{
+        height: var(--panel-h);
+        display:flex;
+        flex-direction: column;
+      }
+      /* จำกัดพื้นที่ table ให้พอดีกับความสูงกล่องขวา */
+      .right-panel .content-container { gap: 16px; }
+    }
+
+    /* Mobile tuning: ป้องกัน digit ทะลุกรอบ */
+    @media (max-width: 480px) {
+      body { padding: 10px 5px; }
+      .toc-bar { gap: 8px; padding: 15px 8px; }
+      .toc-bar button { font-size: 13px; padding: 10px 16px; }
+      .content-container { padding: 20px 15px; }
+      .stat-block { min-width: 120px; padding: 12px; }
+
+      .countdown-wrapper { gap: 8px; }
+      .time-box { min-width: 64px; padding: 10px 8px; border-radius: 14px; }
+      .digit { font-size: clamp(20px,8.5vw,32px); letter-spacing: .5px; }
+      .separator { font-size: clamp(18px,7.5vw,28px); }
+    }
+
+    /* Loading Animation (ตาราง) */
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .5; } }
+    #loadingRow { animation: pulse 1.5s infinite; font-size: 16px; color: #666; }
+  </style>
+</head>
+<body>
+
+  <nav class="toc-bar">
+    <button class="btn-view" onclick="window.open('https://forms.gle/oiVQnoVz1k5LsnrW7','_blank')">ส่งสลิป</button>
+    <button class="btn-check" onclick="window.open('https://x.com/NT1_Project_TH/status/1946568814612926668','_blank')">เกี่ยวกับเรา</button>
+    <button class="btn-contact" onclick="window.open('https://x.com/nt1_project_th?s=21&t=DghsX3sbncYIO7bkKK6z8A','_blank')">ติดต่อเรา</button>
+  </nav>
+
+  <div class="wrapper">
+    <div class="flex-layout">
+      <!-- Progress + Countdown Panel -->
+      <div class="left-panel">
+        <div class="content-container">
+          <div class="donation-section">
+            <div class="progress-stats">
+              <div class="stat-block">
+                <div>💰 ได้รับแล้ว</div>
+                <span class="stat-number" id="raised-amount">0</span>
+                <div style="font-size:14px;color:#666;">บาท</div>
+              </div>
+              <div class="stat-block">
+                <div>🎯 เป้าหมาย</div>
+                <span class="stat-number" id="goal-amount">25,000</span>
+                <div style="font-size:14px;color:#666;">บาท</div>
+              </div>
+            </div>
+
+            <div class="remaining-text" id="remaining-text">กำลังโหลดข้อมูล...</div>
+
+            <div class="progress-container">
+              <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+            </div>
+
+            <!-- Countdown -->
+            <div id="countdown-section" class="countdown-status">
+              <div class="countdown-title">⏰ เหลือเวลาอีก</div>
+              <div class="countdown-wrapper" aria-live="polite">
+                <div class="time-box" id="box-dd">
+                  <span id="cd-dd" class="digit" data-val="00">00</span>
+                  <span class="label">วัน</span>
+                </div>
+                <span class="separator">:</span>
+                <div class="time-box" id="box-hh">
+                  <span id="cd-hh" class="digit" data-val="00">00</span>
+                  <span class="label">ชั่วโมง</span>
+                </div>
+                <span class="separator">:</span>
+                <div class="time-box" id="box-mm">
+                  <span id="cd-mm" class="digit" data-val="00">00</span>
+                  <span class="label">นาที</span>
+                </div>
+                <span class="separator">:</span>
+                <div class="time-box" id="box-ss">
+                  <span id="cd-ss" class="digit" data-val="00">00</span>
+                  <span class="label">วินาที</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="end-text" style="font-size:14px;color:#d32f2f;margin-top:15px;text-align:center;font-weight:500;">
+              สิ้นสุด 30 ต.ค. 2025 เวลา 23:59 น.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table + Notice Panel -->
+      <div class="right-panel">
+        <div class="content-container">
+          <div class="notice">
+            📢 <strong>แจ้งเตือน:</strong> อย่าลืม <a href="https://docs.google.com/forms/d/e/1FAIpQLScerS43KemC7EY-JY_1fNz2Pj4P5jAgkqu46KUGpEt4oIRONQ/viewform" target="_blank">ส่งสลิป</a> หลังโอนนะคะ<br>
+            ⏱️ ระบบจะอัปเดตข้อมูลภายใน 5 นาทีหลังส่งสลิป<br>
+            ❓ หากไม่พบข้อมูลหรือมีปัญหา แจ้งเราได้ที่ <a href="https://x.com/nt1_project_th?s=21&t=DghsX3sbncYIO7bkKK6z8A" target="_blank">@NexT1DEProjectTH</a>
+          </div>
+
+          <!-- Table Area: fixed height + internal scroll -->
+          <div class="table-area">
+            <div class="table-wrapper">
+              <table id="donationTable">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>วันที่โอน</th>
+                    <th>นามแฝง</th>
+                    <th>ยอด (บาท)</th>
+                    <th>สถานะ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="5" id="loadingRow" style="text-align:center; padding: 50px;">
+                      ⏳ กำลังโหลดข้อมูล...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Call to action -->
+            <div id="call-to-action"></div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom big image from project -->
+  <div class="bottom-hero">
+    <!-- แก้ path รูปให้ตรงกับไฟล์ในโปรเจกต์คุณ -->
+    <img src="./promote.png" alt="NexT1DE Project">
+  </div>
+
+  <script>
+    // ===== Config =====
+    const apiURL = "https://script.google.com/macros/s/AKfycbwmhX1tI180NqptU_GKHrpiWolfvFsXZfN9gjCO_tG0jWRYde3D34vDwFpzCqKBPBZ9Mw/exec";
+    const goalAmount = 25000;
+    const endDate = new Date("2025-10-30T23:59:59+07:00"); // Asia/Bangkok
+
+    let rowsPerPage = getRowsPerPage();
+    let currentPage = 1;
+    let allData = [];
+    let isDonationClosed = false;
+    let countdownTimerId = null;
+
+    // ===== Helpers =====
+    function getRowsPerPage() {
+      const width = window.innerWidth;
+      if (width < 600) return 10;
+      if (width <= 1024) return 15;
+      return 20;
+    }
+
+    const pad2 = n => n.toString().padStart(2, '0');
+
+    // ไม่มีแอนิเมชัน: เซ็ตค่าอย่างเดียว
+    function setUnit(digitEl, value) {
+      if (!digitEl) return;
+      const next = String(value);
+      const current = digitEl.getAttribute('data-val');
+      if (current !== next) {
+        digitEl.setAttribute('data-val', next);
+        digitEl.textContent = next;
+      }
+    }
+
+    function renderClosedCountdown() {
+      const cs = document.getElementById('countdown-section');
+      cs.innerHTML = `
+        <div class="countdown-closed" style="font-size:32px;color:#d32f2f;font-weight:800;margin-bottom:6px">
+          🔒 ปิดโดเนทแล้ว
+        </div>
+        <div class="countdown-thanks" style="font-size:18px;color:#c62828">
+          ขอบคุณทุกการสนับสนุนค่ะ ❤️
+        </div>
+      `;
+      document.title = 'ปิดโดเนทแล้ว • สถานะและตารางยอดโดเนท';
+    }
+    
+    function tickCountdown() {
+      const now = new Date();
+      const diffSec = Math.floor((endDate - now) / 1000);
+
+      if (diffSec <= 0) {
+        clearInterval(countdownTimerId);
+        renderClosedCountdown();
+        return;
+      }
+
+      const days = Math.floor(diffSec / 86400);
+      const hours = Math.floor((diffSec % 86400) / 3600);
+      const minutes = Math.floor((diffSec % 3600) / 60);
+      const seconds = diffSec % 60;
+
+      setUnit(document.getElementById('cd-dd'), pad2(days));
+      setUnit(document.getElementById('cd-hh'), pad2(hours));
+      setUnit(document.getElementById('cd-mm'), pad2(minutes));
+      setUnit(document.getElementById('cd-ss'), pad2(seconds));
+    }
+
+    function startCountdown() {
+      const now = new Date();
+      if (now > endDate) { renderClosedCountdown(); return; }
+      tickCountdown(); // ครั้งแรก
+      countdownTimerId = setInterval(tickCountdown, 1000); // เดินทุกวิ
+    }
+
+    function checkDonationStatus() {
+      const now = new Date();
+      isDonationClosed = now > endDate;
+      if (isDonationClosed) renderClosedCountdown();
+      else if (!countdownTimerId) startCountdown();
+    }
+
+    // ===== Data Fetch & UI =====
+    fetch(apiURL)
+      .then(r => r.json())
+      .then(result => {
+        const data = result.data || [];
+        const total = parseFloat(result.total || "0");
+
+        checkDonationStatus();
+        updateProgressDisplay(total);
+
+        if (!Array.isArray(data) || data.length === 0) {
+          showEmptyTable();
+        } else {
+          allData = data;
+          renderTable();
+          renderPagination();
+        }
+      })
+      .catch(err => {
+        console.error("Error fetching data:", err);
+        document.querySelector("#donationTable tbody").innerHTML = `
+          <tr>
+            <td colspan="5" style="color:red; text-align:center; padding:50px;">
+              ❌ เกิดข้อผิดพลาด: ไม่สามารถโหลดข้อมูลได้<br>
+              <small>กรุณารีเฟรชหน้าใหม่</small>
+            </td>
+          </tr>
+        `;
+      });
+
+    function updateProgressDisplay(total) {
+      const remaining = goalAmount - total;
+      const percent = Math.min((total / goalAmount) * 100, 100);
+
+      document.getElementById("raised-amount").innerText = total.toLocaleString();
+      document.getElementById("goal-amount").innerText = goalAmount.toLocaleString();
+
+      if (isDonationClosed || total >= goalAmount) {
+        document.getElementById("progress-fill").style.width = "100%";
+        const remainingText = document.getElementById("remaining-text");
+
+        if (total >= goalAmount) {
+          const over = total - goalAmount;
+          remainingText.className = "remaining-text remaining-green";
+          remainingText.innerHTML = `🎉 <strong>ถึงเป้าหมายแล้ว!</strong> (เกินเป้า ${over.toLocaleString()} บาท)`;
+        } else {
+          remainingText.className = "remaining-text remaining-red";
+          remainingText.innerHTML = `⏰ ปิดโดเนทแล้ว (ได้รับ ${percent.toFixed(1)}% ของเป้าหมาย)`;
+        }
+      } else {
+        document.getElementById("progress-fill").style.width = percent + "%";
+        const remainingText = document.getElementById("remaining-text");
+        if (total === 0) {
+          remainingText.className = "remaining-text remaining-red";
+          remainingText.innerHTML = `🚀 ยังไม่มีการบริจาค - มาเป็นคนแรกกันเถอะ!`;
+        } else {
+          remainingText.className = "remaining-text remaining-red";
+          remainingText.innerHTML = `📊 ความคืบหน้า ${percent.toFixed(1)}% (เหลืออีก <strong>${remaining.toLocaleString()}</strong> บาท)`;
+        }
+      }
+    }
+
+    function showEmptyTable() {
+      document.querySelector("#donationTable tbody").innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align:center; padding:50px;">
+            <div style="font-size:20px;color:#666;margin-bottom:10px;">🌊 ยังไม่มีการบริจาค</div>
+            <div style="font-size:16px;color:#999;">คุณอาจเป็นคนแรกที่จุดพลังให้ NexT1DE</div>
+          </td>
+        </tr>
+      `;
+      document.getElementById("call-to-action").style.display = "none";
+    }
+
+    function renderTable() {
+      const tbody = document.querySelector("#donationTable tbody");
+      const start = (currentPage - 1) * rowsPerPage;
+      const end = start + rowsPerPage;
+      const pageData = allData.slice(start, end);
+
+      tbody.innerHTML = pageData.map((row, index) => {
+        const displayIndex = start + index + 1;
+
+        let statusText = (row.status || "").toLowerCase();
+        let statusDisplay = "";
+        if (statusText.includes("pending")) statusDisplay = '<span style="color:#ff9800;">รอตรวจสอบ</span>';
+        else if (statusText.includes("approved")) statusDisplay = '<span style="color:#4caf50;">ตรวจสอบแล้ว</span>';
+        else statusDisplay = '<span style="color:#666;">📝 ' + (row.status || '') + '</span>';
+
+        const dateDisplay = row.transfer_datetime && row.transfer_datetime.trim() !== '' ? row.transfer_datetime : '<span style="color:#999;">-</span>';
+        const nameDisplay = row.name && row.name.trim() !== '' ? row.name : '<span style="color:#999;">[ไม่ระบุชื่อ]</span>';
+        const amountDisplay = parseFloat(row.amount || 0).toLocaleString();
+
+        return `
+          <tr>
+            <td><strong>${displayIndex}</strong></td>
+            <td>${dateDisplay}</td>
+            <td>${nameDisplay}</td>
+            <td style="text-align:right; font-weight:600; color:#1976d2;">${amountDisplay}</td>
+            <td>${statusDisplay}</td>
+          </tr>
+        `;
+      }).join("");
+
+      const callToAction = document.getElementById("call-to-action");
+      callToAction.style.display = "block";
+      callToAction.innerHTML = `🌊 ขอบคุณที่อยู่เคียงข้าง NexT1DE ทุกก้าว <span style="font-size:14px;display:block;margin-top:5px;font-weight:400;">Together We Rise 💙</span>`;
+    }
+
+    function renderPagination() {
+      const pageCount = Math.ceil(allData.length / rowsPerPage);
+      const pagination = document.getElementById("pagination");
+
+      if (pageCount <= 1) { pagination.innerHTML = ""; return; }
+      pagination.innerHTML = "";
+
+      if (currentPage > 1) {
+        const prevBtn = document.createElement("button");
+        prevBtn.innerHTML = "‹";
+        prevBtn.addEventListener("click", () => { currentPage--; renderTable(); renderPagination(); scrollToTable(); });
+        pagination.appendChild(prevBtn);
+      }
+
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(pageCount, startPage + 4);
+      if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
+
+      for (let i = startPage; i <= endPage; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        if (i === currentPage) btn.classList.add("active");
+        btn.addEventListener("click", () => { currentPage = i; renderTable(); renderPagination(); scrollToTable(); });
+        pagination.appendChild(btn);
+      }
+
+      if (currentPage < pageCount) {
+        const nextBtn = document.createElement("button");
+        nextBtn.innerHTML = "›";
+        nextBtn.addEventListener("click", () => { currentPage++; renderTable(); renderPagination(); scrollToTable(); });
+        pagination.appendChild(nextBtn);
+      }
+    }
+
+    function scrollToTable() {
+      document.querySelector(".table-area").scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Resize handler
+    window.addEventListener("resize", () => {
+      const newRows = getRowsPerPage();
+      if (newRows !== rowsPerPage) {
+        rowsPerPage = newRows; currentPage = 1;
+        if (allData.length > 0) { renderTable(); renderPagination(); }
+      }
+    });
+
+    // Auto refresh every 5 minutes
+    setInterval(() => { location.reload(); }, 5 * 60 * 1000);
+
+    // Initial countdown check
+    checkDonationStatus();
+  </script>
+</body>
+</html>
